@@ -1,0 +1,295 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { PHOTOS } from "@/data/photos";
+
+export const metadata: Metadata = {
+  title: "Sambutan Kepala Sekolah — SMKN 74 Jakarta",
+  description:
+    "Sambutan Drs. Bambang Sutiyono, M.Pd selaku Kepala SMK Negeri 74 Jakarta — visi, harapan, dan undangan untuk bertumbuh bersama.",
+};
+
+const WAVE_BARS = [240, 280, 320, 220, 300, 260, 320, 280, 300, 260, 340, 240, 300, 280];
+
+export default function SambutanPage() {
+  return (
+    <>
+      {/* ---------- Page header (navy, compact) ---------- */}
+      <section className="relative bg-navy text-paper overflow-hidden">
+        {/* Audio-wave background (subtle, smaller than home hero) */}
+        <div aria-hidden className="absolute inset-0 flex items-end justify-between px-8 opacity-25">
+          {WAVE_BARS.map((h, i) => (
+            <span
+              key={i}
+              className="block w-[3vw] max-w-[60px] bg-amber/60 rounded-full animate-wave"
+              style={{
+                height: `${h}px`,
+                animationDelay: `${(i % 6) * 0.18}s`,
+                animationDuration: `${1.4 + (i % 4) * 0.18}s`,
+              }}
+            />
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-b from-navy via-navy/70 to-navy" />
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-5 md:px-8 pt-16 pb-20">
+          {/* Breadcrumb */}
+          <nav
+            aria-label="Breadcrumb"
+            className="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-paper/60 animate-fade-up"
+          >
+            <Link href="/" className="hover:text-amber transition-colors">Beranda</Link>
+            <span className="text-paper/30">/</span>
+            <span className="text-paper/60">Profil Sekolah</span>
+            <span className="text-paper/30">/</span>
+            <span className="text-amber">Sambutan Kepala Sekolah</span>
+          </nav>
+
+          <p className="mt-10 text-sm uppercase tracking-[0.22em] text-amber/90 animate-fade-up" style={{ animationDelay: "0.1s" }}>
+            Salam dari Kepala Sekolah
+          </p>
+          <h1
+            className="mt-4 font-display headline-page font-light max-w-3xl animate-fade-up"
+            style={{ animationDelay: "0.2s" }}
+          >
+            &ldquo;Sekolah ini bukan sekadar tempat belajar — <em className="not-italic text-amber">ia adalah rumah</em> tempat karakter dibentuk.&rdquo;
+          </h1>
+
+          <div className="mt-10 flex items-center gap-6 animate-fade-up" style={{ animationDelay: "0.3s" }}>
+            <div className="h-14 w-14 rounded-full bg-amber text-navy grid place-items-center font-display text-lg font-bold">
+              BS
+            </div>
+            <div className="leading-tight">
+              <p className="font-display text-lg">Drs. Bambang Sutiyono, M.Pd</p>
+              <p className="text-xs uppercase tracking-[0.22em] text-paper/60 mt-1">
+                Kepala SMK Negeri 74 · Periode 2022–sekarang
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Main body ---------- */}
+      <section className="bg-paper py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-5 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* Left: portrait card (sticky on desktop) */}
+          <aside className="lg:col-span-4">
+            <div className="lg:sticky lg:top-28 space-y-5 reveal">
+              {/* Portrait card */}
+              <div className="relative rounded-2xl bg-navy-deep text-paper aspect-[4/5] overflow-hidden animate-float-slow shadow-2xl shadow-black/10">
+                <Image
+                  src={PHOTOS.sambutan.portrait}
+                  alt="Foto Drs. Bambang Sutiyono, Kepala SMK Negeri 74 Jakarta"
+                  fill
+                  sizes="(min-width: 1024px) 400px, 80vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/85 via-transparent to-navy-deep/30 pointer-events-none" />
+                <div className="absolute top-5 left-5 flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-amber z-10">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber animate-pulse-dot" />
+                  Kepala Sekolah
+                </div>
+                <div className="absolute bottom-5 left-5 right-5 z-10">
+                  <p className="font-display text-base leading-tight">Drs. Bambang Sutiyono, M.Pd</p>
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-paper/70 mt-1">
+                    Periode 2022 – sekarang
+                  </p>
+                </div>
+              </div>
+
+              {/* Info card */}
+              <div className="rounded-2xl bg-white border border-black/5 p-6 space-y-3 text-sm">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-muted">
+                  Tentang
+                </p>
+                <dl className="space-y-2.5">
+                  {[
+                    ["Nama", "Drs. Bambang Sutiyono, M.Pd"],
+                    ["Jabatan", "Kepala Sekolah"],
+                    ["Periode", "2022 – sekarang"],
+                    ["Pendidikan", "S2 Manajemen Pendidikan"],
+                    ["Motto", "Belajar untuk hidup."],
+                  ].map(([k, v]) => (
+                    <div key={k} className="flex justify-between gap-4 pb-2 border-b border-black/5 last:border-0 last:pb-0">
+                      <dt className="text-muted shrink-0">{k}</dt>
+                      <dd className="text-right text-ink">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+
+              {/* Quick links */}
+              <div className="rounded-2xl bg-paper-soft p-6 space-y-2 text-sm">
+                <p className="text-[10px] uppercase tracking-[0.22em] text-muted mb-3">
+                  Tautan Cepat
+                </p>
+                {[
+                  ["Visi & Misi", "#visi-misi"],
+                  ["Struktur Organisasi", "#struktur"],
+                  ["Tenaga Pendidik", "#tendik"],
+                  ["Sarana & Prasarana", "#sarana"],
+                ].map(([label, href]) => (
+                  <Link
+                    key={label}
+                    href={href}
+                    className="flex items-center justify-between py-2 text-ink/80 hover:text-navy transition-colors group"
+                  >
+                    {label}
+                    <span className="transition-transform group-hover:translate-x-1">→</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </aside>
+
+          {/* Right: speech body */}
+          <article className="lg:col-span-8 space-y-7 text-[17px] leading-[1.75] text-ink/85">
+            <p className="text-xs uppercase tracking-[0.22em] text-muted reveal">
+              Sambutan
+            </p>
+            <h2 className="font-display text-4xl leading-[1.1] text-ink reveal">
+              Bismillahirrahmanirrahim. Assalamu&rsquo;alaikum warahmatullahi wabarakatuh.
+            </h2>
+
+            {/* First paragraph with drop cap */}
+            <p className="reveal first-letter:font-display first-letter:text-7xl first-letter:font-light first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:leading-[0.85] first-letter:text-amber">
+              Puji syukur kami panjatkan ke hadirat Allah SWT yang telah melimpahkan rahmat dan karunia-Nya, sehingga SMK Negeri 74 Jakarta dapat terus berdiri sebagai rumah belajar bagi generasi muda di Jagakarsa dan sekitarnya.
+            </p>
+
+            <p className="reveal">
+              Sebagai Kepala Sekolah, izinkan saya menyampaikan terima kasih dan apresiasi kepada seluruh keluarga besar SMKN 74 — guru, tenaga kependidikan, siswa, orang tua, alumni, serta mitra industri — atas dedikasi dan kepercayaan yang telah diberikan selama ini.
+            </p>
+
+            <p className="reveal">
+              Di era yang berubah cepat ini, kami percaya bahwa pendidikan kejuruan bukan sekadar tempat memperoleh keterampilan teknis. Ia adalah ruang di mana karakter dibentuk, di mana keingintahuan dijaga, dan di mana setiap anak dibimbing untuk menemukan jalannya sendiri.
+            </p>
+
+            {/* Pull quote */}
+            <blockquote className="my-12 reveal">
+              <div className="border-l-4 border-amber pl-8 py-3">
+                <p className="font-display text-3xl leading-[1.2] text-ink italic">
+                  &ldquo;Visi kami sederhana: melahirkan lulusan yang siap kerja, siap belajar lebih lanjut, dan — yang paling penting — siap menjadi <span className="text-amber not-italic">manusia yang berintegritas</span>.&rdquo;
+                </p>
+              </div>
+            </blockquote>
+
+            <p className="reveal">
+              SMKN 74 menyelenggarakan empat konsentrasi keahlian di bidang seni — <strong className="font-medium text-ink">Tari, Musik, Karawitan, dan Teater</strong> — sebagai jawaban atas kebutuhan industri kreatif Indonesia yang terus tumbuh. Kami juga membuka kelas-kelas industri (PKL), kolaborasi dengan DUDI, serta program kewirausahaan agar siswa kami tidak hanya menjadi pekerja yang baik, tetapi juga pencipta peluang.
+            </p>
+
+            <p className="reveal">
+              Kami berkomitmen menjadikan sekolah ini tempat yang aman, ramah, dan inklusif. Pintu kami terbuka untuk dialog dengan orang tua, dengan komunitas, dan dengan siapa pun yang ingin berkontribusi pada pendidikan anak-anak kita. Kotak saran, layanan surat-menyurat, dan kanal komunikasi digital kami sediakan agar setiap suara dapat didengar.
+            </p>
+
+            <p className="reveal">
+              Terakhir, kepada para siswa: percayalah pada prosesmu. Belajarlah dengan sungguh-sungguh, tetapi jangan lupa untuk bertanya, bermain, dan bermimpi. Sekolah ini ada untukmu — bukan untuk mencetak kalian menjadi sama, melainkan untuk membantu kalian menemukan suara yang khas: <em>suaramu sendiri</em>.
+            </p>
+
+            <p className="reveal">
+              Selamat datang di SMK Negeri 74 Jakarta. Mari bersama-sama menumbuhkan masa depan.
+            </p>
+
+            <p className="reveal text-ink/70">
+              Wassalamu&rsquo;alaikum warahmatullahi wabarakatuh.
+            </p>
+
+            {/* Signature block */}
+            <div className="pt-10 mt-10 border-t border-black/10 reveal">
+              <p className="text-xs uppercase tracking-[0.22em] text-muted mb-4">
+                Hormat kami,
+              </p>
+              {/* Handwritten-style signature */}
+              <svg width="220" height="64" viewBox="0 0 220 64" className="text-navy">
+                <path
+                  d="M8 38 C 28 8, 48 56, 68 28 S 108 8, 128 36 C 138 50, 158 24, 178 38 S 210 20, 216 32"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path d="M70 48 L186 48" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+              </svg>
+              <p className="font-display text-lg mt-3 text-ink">
+                Drs. Bambang Sutiyono, M.Pd
+              </p>
+              <p className="text-sm text-muted">
+                Kepala SMK Negeri 74 Jakarta
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      {/* ---------- CTA back to home / related ---------- */}
+      <section className="bg-white border-t border-black/5 py-14 md:py-20">
+        <div className="mx-auto max-w-7xl px-5 md:px-8">
+          <div className="flex flex-wrap items-end justify-between gap-6 mb-10 reveal">
+            <div>
+              <p className="text-xs uppercase tracking-[0.22em] text-muted mb-3">
+                Selanjutnya
+              </p>
+              <h2 className="font-display headline-quote">
+                Telusuri lebih jauh tentang sekolah.
+              </h2>
+            </div>
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 h-11 px-5 rounded-full border border-black/10 text-sm font-medium hover:bg-paper-soft transition-colors group"
+            >
+              <span className="transition-transform group-hover:-translate-x-1">←</span>
+              Kembali ke Beranda
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              {
+                tag: "Profil",
+                title: "Visi & Misi Sekolah",
+                body: "Apa yang ingin kami capai, dan bagaimana kami menjalankannya setiap hari.",
+                href: "#visi-misi",
+                bg: "bg-navy",
+                ink: "text-paper",
+              },
+              {
+                tag: "Profil",
+                title: "Struktur Organisasi",
+                body: "Manajemen sekolah, tenaga kependidikan, komite, OSIS, dan MPK.",
+                href: "#struktur",
+                bg: "bg-amber",
+                ink: "text-navy",
+              },
+              {
+                tag: "Akademik",
+                title: "Konsentrasi Keahlian",
+                body: "Empat jurusan seni: Tari, Musik, Karawitan, dan Teater.",
+                href: "#keahlian",
+                bg: "bg-moss",
+                ink: "text-paper",
+              },
+            ].map((c, i) => (
+              <Link
+                key={c.title}
+                href={c.href}
+                className={`${c.bg} ${c.ink} group rounded-2xl p-7 flex flex-col gap-4 aspect-[4/3] transition-transform duration-500 hover:-translate-y-2 reveal`}
+                style={{ animationDelay: `${i * 0.1}s` }}
+              >
+                <p className="text-[10px] uppercase tracking-[0.22em] opacity-80">
+                  {c.tag}
+                </p>
+                <h3 className="font-display text-2xl leading-tight mt-auto">
+                  {c.title}
+                </h3>
+                <p className="text-sm opacity-80 leading-relaxed">{c.body}</p>
+                <span className="inline-flex items-center gap-2 text-sm font-medium">
+                  Pelajari
+                  <span className="transition-transform group-hover:translate-x-1">→</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}

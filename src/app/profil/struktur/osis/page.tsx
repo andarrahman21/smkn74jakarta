@@ -1,0 +1,73 @@
+import type { Metadata } from "next";
+import { PageHeader } from "@/components/profil/PageHeader";
+import { PeopleSection } from "@/components/profil/PeopleSection";
+import { RelatedCards } from "@/components/profil/RelatedCards";
+
+export const metadata: Metadata = { title: "OSIS — SMKN 74 Jakarta" };
+
+const people = [
+  { initials: "RA", name: "Rangga Aditya", role: "Ketua OSIS", bg: "bg-navy" },
+  { initials: "PS", name: "Putri Syahara", role: "Wakil Ketua", bg: "bg-amber", ink: "text-navy" },
+  { initials: "AM", name: "Anisa Maulida", role: "Sekretaris", bg: "bg-moss" },
+  { initials: "BF", name: "Bagus Firmansyah", role: "Bendahara", bg: "bg-rust" },
+  { initials: "KH", name: "Kharisma Hadi", role: "Sie Kerohanian", bg: "bg-navy-deep" },
+  { initials: "LP", name: "Lestari Pertiwi", role: "Sie Olahraga", bg: "bg-navy" },
+  { initials: "DA", name: "Dimas Arifin", role: "Sie Seni & Budaya", bg: "bg-amber", ink: "text-navy" },
+  { initials: "SM", name: "Sari Melati", role: "Sie Humas", bg: "bg-moss" },
+];
+
+const programs = [
+  { n: "01", t: "Pekan Seni", d: "Festival seni tahunan menampilkan karya semua jurusan." },
+  { n: "02", t: "Kampanye Sosial", d: "Aksi peduli lingkungan & literasi tetangga sekolah." },
+  { n: "03", t: "MPLS", d: "Pengenalan lingkungan untuk siswa baru." },
+  { n: "04", t: "Class Meeting", d: "Liga internal antar kelas: olahraga, e-sport, debat." },
+];
+
+export default function Page() {
+  return (
+    <>
+      <PageHeader
+        crumbs={[
+          { label: "Beranda", href: "/" },
+          { label: "Profil Sekolah" },
+          { label: "Struktur Organisasi", href: "/profil/struktur" },
+          { label: "OSIS" },
+        ]}
+        tagline="Organisasi Siswa Intra Sekolah"
+        title="Suara siswa,"
+        accent="aksi nyata."
+      />
+
+      {/* Programs */}
+      <section className="bg-paper py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-5 md:px-8">
+          <div className="mb-12 reveal">
+            <p className="text-xs uppercase tracking-[0.22em] text-muted mb-3">Program Unggulan</p>
+            <h2 className="font-display headline-section max-w-2xl">Empat program yang menjadi ciri.</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {programs.map((p, i) => (
+              <article key={p.n} className="reveal group bg-white border border-black/5 rounded-2xl p-7 hover:border-amber hover:-translate-y-0.5 transition-all duration-300" style={{ animationDelay: `${i * 0.08}s` }}>
+                <div className="flex items-baseline gap-4 mb-2">
+                  <span className="font-display text-3xl text-amber">{p.n}</span>
+                  <h3 className="font-display text-2xl">{p.t}</h3>
+                </div>
+                <p className="text-ink/70 leading-relaxed">{p.d}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <PeopleSection people={people} heading="Pengurus OSIS periode 2025/2026." />
+
+      <RelatedCards
+        items={[
+          { tag: "Kesiswaan", title: "MPK", body: "Majelis Perwakilan Kelas.", href: "/profil/struktur/mpk", bg: "bg-amber", ink: "text-navy" },
+          { tag: "Layanan", title: "Surat Izin Kegiatan", body: "Ajukan izin kegiatan OSIS.", href: "#", bg: "bg-moss", ink: "text-paper" },
+          { tag: "Berita", title: "Agenda", body: "Lihat agenda terdekat.", href: "#", bg: "bg-rust", ink: "text-paper" },
+        ]}
+      />
+    </>
+  );
+}

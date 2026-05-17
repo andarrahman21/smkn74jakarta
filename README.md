@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# smkn74-web
 
-## Getting Started
+Next.js (App Router, TypeScript, Tailwind) + Supabase local dev scaffold.
 
-First, run the development server:
+## Stack
+
+- **Frontend & backend**: Next.js 15 App Router (React Server Components + Route Handlers)
+- **Database / auth / storage**: Supabase (local stack via Supabase CLI + Docker)
+- **Client libs**: `@supabase/supabase-js`, `@supabase/ssr`
+
+## One-time setup
+
+1. Install **Docker Desktop** (required by the Supabase CLI) and launch it.
+2. Install the **Supabase CLI**:
+   ```bash
+   brew install supabase/tap/supabase
+   ```
+3. Initialize the local Supabase project (creates `supabase/` folder):
+   ```bash
+   supabase init
+   ```
+
+## Running locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 1. Start the local Supabase stack (Postgres, Auth, Storage, Studio)
+supabase start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The command prints an `API URL`, `anon key`, and `service_role key`. Copy them into `.env.local`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon key>
+SUPABASE_SERVICE_ROLE_KEY=<service role key>
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# 2. Start Next.js
+npm run dev
+```
 
-## Learn More
+- App: http://localhost:3000
+- Health check: http://localhost:3000/api/health
+- Supabase Studio: http://127.0.0.1:54323
 
-To learn more about Next.js, take a look at the following resources:
+## Project layout
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+  app/
+    page.tsx              # Home, runs a server-side Supabase check
+    api/health/route.ts   # JSON health endpoint
+  lib/supabase/
+    client.ts             # Browser client (use in "use client" components)
+    server.ts             # Server client (use in RSC, route handlers, server actions)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Useful Supabase CLI commands
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+supabase status     # show local URLs and keys
+supabase stop       # stop the local stack
+supabase db reset   # reset database to migrations + seed
+supabase migration new <name>
+```
