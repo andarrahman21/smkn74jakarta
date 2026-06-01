@@ -10,17 +10,24 @@ export function PeopleSection({
   people,
   heading,
   eyebrow = "Anggota",
+  cmsPrefix,
+  headingKey,
+  eyebrowKey,
 }: {
   people: Person[];
   heading: string;
   eyebrow?: string;
+  /** Jika diisi, name & role tiap kartu jadi editable: `${cmsPrefix}.${i}.name` */
+  cmsPrefix?: string;
+  headingKey?: string;
+  eyebrowKey?: string;
 }) {
   return (
     <section className="bg-white border-t border-black/5 py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <div className="mb-12 reveal">
-          <p className="text-xs uppercase tracking-[0.22em] text-muted mb-3">{eyebrow}</p>
-          <h2 className="font-display headline-section max-w-2xl">{heading}</h2>
+          <p data-cms-key={eyebrowKey} data-cms-type={eyebrowKey ? "text" : undefined} className="text-xs uppercase tracking-[0.22em] text-muted mb-3">{eyebrow}</p>
+          <h2 data-cms-key={headingKey} data-cms-type={headingKey ? "text" : undefined} className="font-display headline-section max-w-2xl">{heading}</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {people.map((p, i) => (
@@ -36,8 +43,8 @@ export function PeopleSection({
                 </span>
               </div>
               <div className="border-t border-current/15 pt-3">
-                <p className="font-display text-base leading-snug">{p.name}</p>
-                <p className="text-[11px] opacity-70 mt-1">{p.role}</p>
+                <p data-cms-key={cmsPrefix ? `${cmsPrefix}.${i}.name` : undefined} data-cms-type={cmsPrefix ? "text" : undefined} data-cms-label={cmsPrefix ? "Nama" : undefined} className="font-display text-base leading-snug">{p.name}</p>
+                <p data-cms-key={cmsPrefix ? `${cmsPrefix}.${i}.role` : undefined} data-cms-type={cmsPrefix ? "text" : undefined} data-cms-label={cmsPrefix ? "Jabatan" : undefined} className="text-[11px] opacity-70 mt-1">{p.role}</p>
               </div>
             </article>
           ))}

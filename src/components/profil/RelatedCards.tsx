@@ -9,14 +9,26 @@ export type Related = {
   ink: string;
 };
 
-export function RelatedCards({ items, heading = "Telusuri lebih jauh tentang sekolah." }: { items: Related[]; heading?: string }) {
+export function RelatedCards({
+  items,
+  heading = "Telusuri lebih jauh tentang sekolah.",
+  eyebrowKey,
+  headingKey,
+}: {
+  items: Related[];
+  heading?: string;
+  /** CMS key for the eyebrow label (makes it editable via overlay) */
+  eyebrowKey?: string;
+  /** CMS key for the heading (makes it editable via overlay) */
+  headingKey?: string;
+}) {
   return (
     <section className="bg-white border-t border-black/5 py-14 md:py-20">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <div className="flex flex-wrap items-end justify-between gap-6 mb-10 reveal">
           <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-muted mb-3">Selanjutnya</p>
-            <h2 className="font-display headline-quote max-w-2xl">{heading}</h2>
+            <p data-cms-key={eyebrowKey} data-cms-type={eyebrowKey ? "text" : undefined} data-cms-label={eyebrowKey ? "Label selanjutnya" : undefined} className="text-xs uppercase tracking-[0.22em] text-muted mb-3">Selanjutnya</p>
+            <h2 data-cms-key={headingKey} data-cms-type={headingKey ? "text" : undefined} data-cms-label={headingKey ? "Judul selanjutnya" : undefined} className="font-display headline-quote max-w-2xl">{heading}</h2>
           </div>
           <Link
             href="/"

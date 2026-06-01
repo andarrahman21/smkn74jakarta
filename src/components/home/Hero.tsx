@@ -2,94 +2,57 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { PHOTOS } from "@/data/photos";
 
 const WAVE_BARS = [280, 320, 340, 240, 360, 220, 320, 280, 300, 300, 280, 340, 240, 300, 320, 260, 340, 220, 300, 280];
 
-type SceneKey = "dancers" | "robot" | "animator" | "speaker" | "workshop";
-
-type Slide = {
+export type HeroSlide = {
+  id: string;
   eyebrow: string;
-  headPre: string;
-  headAccent: string;
-  headPost: string;
-  tag: string;
-  caption: string;
-  year: string;
-  scene: SceneKey;
+  head: string;
+  tag: string | null;
+  caption: string | null;
+  year_label: string | null;
+  image_url: string | null;
+  image_alt: string | null;
 };
 
-const slides: Slide[] = [
-  {
-    eyebrow: "Di SMKN 74, kami percaya pada",
-    headPre: "Menemukan jalanmu",
-    headAccent: "dalam komunitas",
-    headPost: "yang menghargai siapa\ndirimu sepenuhnya.",
-    tag: "Pertunjukan tari kelas X",
-    caption: "Pertunjukan akhir tingkatan tim usai final.",
-    year: "Tari, 2025",
-    scene: "dancers",
-  },
-  {
-    eyebrow: "Cerita dari kompetisi nasional",
-    headPre: "Bangun karya yang",
-    headAccent: "membuat kota berbicara",
-    headPost: "lewat tim Robotik\nkebanggaan sekolah.",
-    tag: "Tim Robotik · Juara Nasional",
-    caption: "Tim Robotik raih juara di tingkat nasional Yogyakarta.",
-    year: "Robotik, 2026",
-    scene: "robot",
-  },
-  {
-    eyebrow: "Ruang kreatif setiap hari",
-    headPre: "Kreativitas yang",
-    headAccent: "tumbuh dari ketekunan",
-    headPost: "studio Animasi 3D &\nMultimedia kami.",
-    tag: "Animasi 3D · LKS 2026",
-    caption: "Juara 1 Lomba Kompetensi Siswa bidang Animasi 3D 2026.",
-    year: "Animasi & Multimedia, 2026",
-    scene: "animator",
-  },
-  {
-    eyebrow: "Pesan dari Kepala Sekolah",
-    headPre: "Sekolah ini bukan",
-    headAccent: "sekadar tempat belajar",
-    headPost: "— ia adalah rumah\ntempat karakter dibentuk.",
-    tag: "Sambutan · Drs. Bambang S.",
-    caption: "Bismillahirrohmanirrahim. Selamat datang di SMKN 74.",
-    year: "Sambutan, 2026",
-    scene: "speaker",
-  },
-  {
-    eyebrow: "Industri dan masa depan",
-    headPre: "Belajar langsung dari",
-    headAccent: "dunia industri nyata",
-    headPost: "lewat program PKL\nkelas industri.",
-    tag: "Humas & DUDI · PKL Aktif",
-    caption: "Kolaborasi nyata dengan mitra industri DKI Jakarta.",
-    year: "PKL, 2026",
-    scene: "workshop",
-  },
-];
-
-const ALT_FOR_SCENE: Record<SceneKey, string> = {
-  dancers:  "Penari pertunjukan tari kelas X SMKN 74",
-  robot:    "Robot karya tim Robotik SMKN 74 di kompetisi",
-  animator: "Siswa Animasi 3D bekerja di studio multimedia",
-  speaker:  "Kepala Sekolah SMKN 74 menyampaikan sambutan",
-  workshop: "Siswa praktik kerja lapangan di workshop industri",
+type Props = {
+  slides: HeroSlide[];
 };
 
-export function Hero() {
+/**
+ * Parse `head` field — text wrapped in *asterisks* renders amber.
+ * E.g. "Belajar dari *dunia industri* nyata" → "Belajar dari " <amber>dunia industri</amber> " nyata"
+ */
+function HeadText({ text }: { text: string }) {
+  const parts = text.split(/\*([^*]+)\*/g);
+  return (
+    <>
+      {parts.map((part, i) =>
+        i % 2 === 1 ? (
+          <em key={i} className="not-italic text-amber">
+            {part}
+          </em>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </>
+  );
+}
+
+export function Hero({ slides }: Props) {
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
   const total = slides.length;
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || total === 0) return;
     const id = setInterval(() => setIdx((i) => (i + 1) % total), 5500);
     return () => clearInterval(id);
   }, [total, paused]);
+
+  if (total === 0) return null;
 
   const slide = slides[idx];
 
@@ -112,7 +75,7 @@ export function Hero() {
       </div>
 
       <div className="relative mx-auto max-w-7xl px-5 md:px-8 pt-10 pb-14 md:pt-16 md:pb-24 grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center min-h-[560px] md:min-h-[700px]">
-        {/* Left copy — re-keyed so it re-animates on slide change */}
+        {/* Left copy */}
         <div key={`copy-${idx}`} className="lg:col-span-6">
           <p
             className="text-xs sm:text-sm uppercase tracking-[0.22em] text-amber/90 mb-4 md:mb-6 animate-fade-up"
@@ -124,12 +87,10 @@ export function Hero() {
             className="font-display headline-hero font-light animate-fade-up whitespace-pre-line"
             style={{ animationDelay: "0.18s" }}
           >
-            {slide.headPre} <br />
-            <em className="not-italic text-amber">{slide.headAccent}</em> <br />
-            {slide.headPost}
+            <HeadText text={slide.head} />
           </h1>
 
-          {/* Slide dots — active dot fills amber over 5.5s sebagai progress bar */}
+          {/* Slide dots */}
           <div className="flex items-center gap-2 mt-8 md:mt-12">
             {slides.map((_, i) => {
               const active = idx === i;
@@ -156,7 +117,7 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Right photo card — pause auto-slide on hover */}
+        {/* Right photo card */}
         <div
           key={`card-${idx}`}
           className="lg:col-span-6 animate-fade-up"
@@ -165,31 +126,41 @@ export function Hero() {
           onMouseLeave={() => setPaused(false)}
         >
           <div className="relative rounded-2xl bg-navy-deep border border-white/10 aspect-[5/4] overflow-hidden shadow-2xl shadow-black/50 animate-float-slow">
-            {/* Photo */}
-            <Image
-              src={PHOTOS.hero[slide.scene]}
-              alt={ALT_FOR_SCENE[slide.scene]}
-              fill
-              priority={idx === 0}
-              sizes="(min-width: 1024px) 600px, 100vw"
-              className="object-cover"
-            />
-            {/* Vignette */}
+            {slide.image_url ? (
+              <Image
+                src={slide.image_url}
+                alt={slide.image_alt ?? slide.eyebrow}
+                fill
+                priority={idx === 0}
+                sizes="(min-width: 1024px) 600px, 100vw"
+                className="object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 bg-navy-deep" />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/90 via-navy-deep/20 to-navy-deep/40 pointer-events-none" />
 
             {/* Tag */}
-            <div className="absolute top-4 left-4 md:top-6 md:left-6 flex items-center gap-2 text-[10px] md:text-[11px] uppercase tracking-[0.18em] text-amber z-10 max-w-[70%]">
-              <span className="shrink-0 h-1.5 w-1.5 rounded-full bg-amber animate-pulse-dot" />
-              <span className="truncate">{slide.tag}</span>
-            </div>
+            {slide.tag && (
+              <div className="absolute top-4 left-4 md:top-6 md:left-6 flex items-center gap-2 text-[10px] md:text-[11px] uppercase tracking-[0.18em] text-amber z-10 max-w-[70%]">
+                <span className="shrink-0 h-1.5 w-1.5 rounded-full bg-amber animate-pulse-dot" />
+                <span className="truncate">{slide.tag}</span>
+              </div>
+            )}
 
             {/* Bottom caption */}
-            <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 z-10">
-              <p className="font-display italic text-paper text-xs sm:text-sm leading-snug drop-shadow-md">
-                {slide.caption}
-              </p>
-              <p className="text-[10px] sm:text-xs text-paper/70 mt-1">{slide.year}</p>
-            </div>
+            {(slide.caption || slide.year_label) && (
+              <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 z-10">
+                {slide.caption && (
+                  <p className="font-display italic text-paper text-xs sm:text-sm leading-snug drop-shadow-md">
+                    {slide.caption}
+                  </p>
+                )}
+                {slide.year_label && (
+                  <p className="text-[10px] sm:text-xs text-paper/70 mt-1">{slide.year_label}</p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

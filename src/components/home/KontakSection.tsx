@@ -1,23 +1,24 @@
 import Link from "next/link";
+import type { SiteContent } from "@/lib/site-content/get";
 
-export function KontakSection() {
+export function KontakSection({ cms }: { cms: SiteContent }) {
   return (
     <section id="kontak" className="bg-paper py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <div className="mb-12 reveal flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-muted mb-3">
-              Hubungi Kami
+            <p data-cms-key="kontak.eyebrow" data-cms-type="text" className="text-xs uppercase tracking-[0.22em] text-muted mb-3">
+              {cms["kontak.eyebrow"]}
             </p>
-            <h2 className="font-display headline-section">
-              Datang, tanya, terhubung.
+            <h2 data-cms-key="kontak.heading" data-cms-type="text" className="font-display headline-section">
+              {cms["kontak.heading"]}
             </h2>
           </div>
           <Link
             href="/kontak"
             className="inline-flex items-center gap-2 h-11 px-5 rounded-full border border-black/10 text-sm font-medium hover:bg-white transition-colors group"
           >
-            Halaman kontak lengkap
+            <span data-cms-key="kontak.full_link" data-cms-type="text">{cms["kontak.full_link"]}</span>
             <span className="transition-transform group-hover:translate-x-1">→</span>
           </Link>
         </div>
@@ -29,7 +30,7 @@ export function KontakSection() {
               {/* Real Google Maps */}
               <iframe
                 title="Lokasi SMKN 74 Jakarta"
-                src="https://www.google.com/maps?q=SMK+Negeri+74+Jakarta+Jagakarsa&output=embed"
+                src={cms["kontak.maps_query"]}
                 className="absolute inset-0 w-full h-full"
                 style={{ border: 0 }}
                 loading="lazy"
@@ -51,8 +52,8 @@ export function KontakSection() {
                       Buka peta ↗
                     </span>
                   </div>
-                  <p className="text-sm font-medium mt-1.5 group-hover:text-navy transition-colors">
-                    Jl. Moch. Kahfi II, Jagakarsa, Jakarta Selatan 12640
+                  <p data-cms-key="kontak.address" data-cms-type="textarea" className="text-sm font-medium mt-1.5 group-hover:text-navy transition-colors">
+                    {cms["kontak.address"]}
                   </p>
                 </a>
               </div>
@@ -68,19 +69,19 @@ export function KontakSection() {
               <dl className="space-y-3 text-sm">
                 <div className="flex justify-between border-b border-white/10 pb-3">
                   <dt className="text-paper/60">Telepon</dt>
-                  <dd>(021) 7864-216</dd>
+                  <dd data-cms-key="kontak.phone" data-cms-type="text">{cms["kontak.phone"]}</dd>
                 </div>
                 <div className="flex justify-between border-b border-white/10 pb-3">
                   <dt className="text-paper/60">Email</dt>
-                  <dd>info@smkn74.sch.id</dd>
+                  <dd data-cms-key="kontak.email" data-cms-type="text">{cms["kontak.email"]}</dd>
                 </div>
                 <div className="flex justify-between border-b border-white/10 pb-3">
                   <dt className="text-paper/60">Jam Kerja</dt>
-                  <dd>Senin–Jumat · 07.00–16.00</dd>
+                  <dd data-cms-key="kontak.hours" data-cms-type="text">{cms["kontak.hours"]}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-paper/60">PPDB</dt>
-                  <dd>Apr–Jun</dd>
+                  <dd data-cms-key="kontak.ppdb" data-cms-type="text">{cms["kontak.ppdb"]}</dd>
                 </div>
               </dl>
             </div>
@@ -94,8 +95,8 @@ export function KontakSection() {
                   Cepat
                 </span>
               </div>
-              <p className="text-sm leading-relaxed text-ink/75 mb-5">
-                Punya masukan untuk sekolah? Kirim secara anonim atau dengan nama Anda.
+              <p data-cms-key="kontak.form_desc" data-cms-type="textarea" className="text-sm leading-relaxed text-ink/75 mb-5">
+                {cms["kontak.form_desc"]}
               </p>
               <Link href="/kontak#kotak-saran" className="inline-flex items-center gap-2 h-11 px-6 rounded-full bg-ink text-paper text-sm font-medium hover:bg-navy transition-colors group">
                 Kirim Surat

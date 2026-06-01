@@ -1,21 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
-import { pengumumanList } from "@/data/pengumuman";
-import { PHOTOS } from "@/data/photos";
+import { getPengumumanList } from "@/lib/queries/pengumuman";
+import type { SiteContent } from "@/lib/site-content/get";
 
-export function WelcomeRow() {
-  const announcements = pengumumanList.slice(0, 3);
+export async function WelcomeRow({ cms }: { cms: SiteContent }) {
+  const announcements = await getPengumumanList(3);
 
   return (
     <section className="bg-paper py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-5 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
         {/* Announcements card */}
         <div className="lg:col-span-5 reveal">
-          <p className="text-xs uppercase tracking-[0.22em] text-muted mb-3">
-            Pengumuman
+          <p data-cms-key="welcome.announce_eyebrow" data-cms-type="text" className="text-xs uppercase tracking-[0.22em] text-muted mb-3">
+            {cms["welcome.announce_eyebrow"]}
           </p>
-          <h2 className="font-display text-2xl md:text-3xl leading-tight mb-6 md:mb-8">
-            Kabar terbaru dari sekolah
+          <h2 data-cms-key="welcome.announce_heading" data-cms-type="text" className="font-display text-2xl md:text-3xl leading-tight mb-6 md:mb-8">
+            {cms["welcome.announce_heading"]}
           </h2>
 
           <ul className="rounded-2xl bg-white border border-black/5 divide-y divide-black/5 overflow-hidden">
@@ -43,33 +43,36 @@ export function WelcomeRow() {
           </ul>
 
           <Link href="/pengumuman" className="inline-flex items-center gap-2 mt-5 text-sm font-medium text-navy hover:text-amber transition-colors group">
-            Lihat semua Pengumuman
+            <span data-cms-key="welcome.announce_link" data-cms-type="text">{cms["welcome.announce_link"]}</span>
             <span className="transition-transform group-hover:translate-x-1">→</span>
           </Link>
         </div>
 
         {/* Sambutan + video */}
         <div className="lg:col-span-7 reveal" style={{ animationDelay: "0.15s" }}>
-          <p className="text-xs uppercase tracking-[0.22em] text-muted mb-3">
-            Sambutan Kepala Sekolah
+          <p data-cms-key="welcome.sambutan_eyebrow" data-cms-type="text" className="text-xs uppercase tracking-[0.22em] text-muted mb-3">
+            {cms["welcome.sambutan_eyebrow"]}
           </p>
           <h3 className="font-display headline-quote max-w-xl mb-8">
-            &ldquo;Sekolah ini bukan sekadar tempat belajar — ia adalah rumah tempat karakter dibentuk.&rdquo;
+            &ldquo;<span data-cms-key="welcome.quote" data-cms-type="textarea">{cms["welcome.quote"]}</span>&rdquo;
           </h3>
 
           {/* Video card */}
           <div className="group relative rounded-2xl overflow-hidden bg-navy aspect-[4/3] sm:aspect-[16/8] cursor-pointer">
             <Image
-              src={PHOTOS.welcomeVideo}
+              data-cms-key="welcome.image"
+              data-cms-type="image"
+              src={cms["welcome.image"]}
               alt="Cuplikan sambutan Kepala Sekolah SMKN 74"
               fill
               sizes="(min-width: 1024px) 700px, 100vw"
               className="object-cover transition-transform duration-700 group-hover:scale-105"
+              unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/30 to-navy/50 pointer-events-none" />
             <div className="absolute top-4 left-4 z-10 flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-amber">
               <span className="px-2 py-0.5 rounded-sm bg-amber text-navy font-semibold">VIDEO</span>
-              <span>03:41</span>
+              <span data-cms-key="welcome.video_duration" data-cms-type="text">{cms["welcome.video_duration"]}</span>
             </div>
             <button
               aria-label="Putar video"
@@ -84,14 +87,9 @@ export function WelcomeRow() {
             </button>
           </div>
 
-          <p className="mt-8 text-[15px] leading-relaxed text-ink/75 max-w-2xl">
-            Bismillahirrohmanirrahim. Puji syukur kami panjatkan ke hadirat Allah SWT. SMKN 74 Jakarta hadir di Jagakarsa sebagai sekolah kejuruan yang berkomitmen membentuk lulusan terbaik di dunia industri — siap menghadapi dunia kerja, industri, maupun jenjang pendidikan tinggi.
+          <p data-cms-key="welcome.paragraph" data-cms-type="textarea" className="mt-8 text-[15px] leading-relaxed text-ink/75 max-w-2xl whitespace-pre-line">
+            {cms["welcome.paragraph"]}
           </p>
-
-          <Link href="/tentang" className="mt-6 inline-flex items-center gap-2 h-11 px-6 rounded-full bg-ink text-paper text-sm font-medium hover:bg-navy transition-colors group">
-            Tentang Sekolah
-            <span className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
         </div>
       </div>
     </section>

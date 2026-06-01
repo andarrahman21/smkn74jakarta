@@ -1,27 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
-import { beritaList } from "@/data/berita";
+import { getBeritaList } from "@/lib/queries/berita";
+import type { SiteContent } from "@/lib/site-content/get";
 
-export function NewsSection() {
-  const news = beritaList.slice(0, 3);
+export async function NewsSection({ cms }: { cms: SiteContent }) {
+  const news = await getBeritaList(3);
 
   return (
     <section id="berita" className="bg-white py-24 border-t border-black/5">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <div className="flex items-end justify-between mb-14 reveal">
           <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-muted mb-3">
-              Cerita Terbaru
+            <p data-cms-key="news.eyebrow" data-cms-type="text" className="text-xs uppercase tracking-[0.22em] text-muted mb-3">
+              {cms["news.eyebrow"]}
             </p>
-            <h2 className="font-display headline-section max-w-xl">
-              Cerita dari sekolah kami.
+            <h2 data-cms-key="news.heading" data-cms-type="text" className="font-display headline-section max-w-xl">
+              {cms["news.heading"]}
             </h2>
           </div>
           <Link
             href="/berita"
             className="hidden md:inline-flex items-center gap-2 h-11 px-5 rounded-full border border-black/10 text-sm font-medium hover:bg-paper-soft transition-colors group"
           >
-            Lihat semua Berita
+            <span data-cms-key="news.link" data-cms-type="text">{cms["news.link"]}</span>
             <span className="transition-transform group-hover:translate-x-1">→</span>
           </Link>
         </div>

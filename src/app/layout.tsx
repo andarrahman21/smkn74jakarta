@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
-import { MainNav } from "@/components/home/MainNav";
-import { Footer } from "@/components/home/Footer";
 import { RevealObserver } from "@/components/RevealObserver";
 
 const inter = Inter({
@@ -46,17 +44,8 @@ export default function RootLayout({
       lang="id"
       className={`${inter.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-paper text-ink font-sans">
-        {/* Skip to content for keyboard / screen reader users */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-3 focus:rounded-full focus:bg-amber focus:text-navy focus:font-medium focus:shadow-2xl"
-        >
-          Lompat ke konten utama
-        </a>
-        <MainNav />
-        <main id="main-content" className="flex-1">{children}</main>
-        <Footer />
+      <body suppressHydrationWarning className="min-h-full flex flex-col bg-paper text-ink font-sans">
+        {children}
         <RevealObserver />
       </body>
     </html>

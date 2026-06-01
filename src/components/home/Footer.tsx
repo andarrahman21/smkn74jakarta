@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { resolveSiteContent } from "@/lib/site-content/get";
 
 const cols = [
   { title: "Profil", links: [
@@ -20,8 +21,6 @@ const cols = [
     { l: "Prestasi", h: "/prestasi" },
   ]},
   { title: "Lainnya", links: [
-    { l: "Galeri", h: "/galeri" },
-    { l: "Unduhan", h: "/unduhan" },
     { l: "Mitra DUDI", h: "/mitra-dudi" },
     { l: "Kontak", h: "/kontak" },
   ]},
@@ -60,7 +59,8 @@ const iconMap: Record<string, () => React.ReactNode> = {
   Instagram: IconInstagram, YouTube: IconYouTube, Facebook: IconFacebook, TikTok: IconTikTok,
 };
 
-export function Footer() {
+export async function Footer() {
+  const cms = await resolveSiteContent();
   return (
     <footer className="bg-navy-deep text-paper">
       {/* Main */}
@@ -68,28 +68,30 @@ export function Footer() {
         {/* Brand */}
         <div className="col-span-2 md:col-span-2">
           <div className="flex items-center gap-3 mb-5">
-            <div className="h-11 w-11 rounded-full bg-amber text-navy grid place-items-center font-display text-xl font-bold">74</div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Logo SMK Negeri 74 Jakarta" className="h-11 w-11 rounded-full object-contain" />
             <div className="leading-tight">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-amber">SMK</p>
-              <p className="font-display text-lg">Negeri 74</p>
+              <p className="text-[10px] uppercase tracking-[0.18em] text-amber">SMK Negeri</p>
+              <p className="font-display text-lg">74 Jakarta</p>
             </div>
           </div>
-          <p className="text-sm text-paper/60 leading-relaxed max-w-xs">
-            Jl. Moch. Kahfi II, Jagakarsa <br />
-            Jakarta Selatan 12640
+          <p data-cms-key="footer.address" data-cms-type="textarea" data-cms-label="Alamat footer" className="text-sm text-paper/60 leading-relaxed max-w-xs whitespace-pre-line">
+            {cms["footer.address"] ?? "Jl. Moch. Kahfi II, Jagakarsa\nJakarta Selatan 12640"}
           </p>
-          <p className="text-xs text-paper/40 mt-3">Telepon (021) 7864-216 · NPSN 20103247</p>
+          <p data-cms-key="footer.contact" data-cms-type="text" data-cms-label="Kontak footer" className="text-xs text-paper/40 mt-3">
+            {cms["footer.contact"] ?? "Telepon (021) 7864-216 · NPSN 20103247"}
+          </p>
 
           {/* Credibility badges */}
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <div className="px-3 py-1.5 rounded-md border border-amber/30 bg-amber/10 text-amber text-[10px] uppercase tracking-widest font-semibold">
-              Akreditasi A
+            <div data-cms-key="footer.badge_1" data-cms-type="text" data-cms-label="Badge 1" className="px-3 py-1.5 rounded-md border border-amber/30 bg-amber/10 text-amber text-[10px] uppercase tracking-widest font-semibold">
+              {cms["footer.badge_1"] ?? "Akreditasi A"}
             </div>
-            <div className="px-3 py-1.5 rounded-md border border-white/15 text-paper/70 text-[10px] uppercase tracking-widest">
-              Kemendikbudristek
+            <div data-cms-key="footer.badge_2" data-cms-type="text" data-cms-label="Badge 2" className="px-3 py-1.5 rounded-md border border-white/15 text-paper/70 text-[10px] uppercase tracking-widest">
+              {cms["footer.badge_2"] ?? "Kemendikbudristek"}
             </div>
-            <div className="px-3 py-1.5 rounded-md border border-white/15 text-paper/70 text-[10px] uppercase tracking-widest">
-              Pemprov DKI
+            <div data-cms-key="footer.badge_3" data-cms-type="text" data-cms-label="Badge 3" className="px-3 py-1.5 rounded-md border border-white/15 text-paper/70 text-[10px] uppercase tracking-widest">
+              {cms["footer.badge_3"] ?? "Pemprov DKI"}
             </div>
           </div>
         </div>
@@ -114,20 +116,11 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-7xl px-5 md:px-8 py-6 flex flex-wrap items-center justify-between gap-4">
           <p className="text-xs text-paper/50">
-            © 2026 SMK Negeri 74 Jakarta. Dirancang oleh{" "}
-            <Link href="/profil/keahlian" className="hover:text-amber transition-colors underline-offset-4 hover:underline">
-              tim Multimedia
-            </Link>
-            .
+            <span data-cms-key="footer.copyright" data-cms-type="text" data-cms-label="Teks copyright">
+              {cms["footer.copyright"] ?? "© 2026 SMK Negeri 74 Jakarta."}
+            </span>
           </p>
           <div className="flex items-center gap-3">
-            <Link href="/privasi" className="text-xs text-paper/50 hover:text-amber transition-colors">
-              Privasi
-            </Link>
-            <Link href="/syarat-layanan" className="text-xs text-paper/50 hover:text-amber transition-colors">
-              Syarat
-            </Link>
-            <span className="h-3 w-px bg-white/20" />
             {socials.map((s) => {
               const Icon = iconMap[s.name];
               return (

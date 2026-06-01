@@ -17,12 +17,24 @@ export function KotakSaranForm() {
     setErrorMsg("");
 
     try {
-      // TODO: replace with real endpoint (Supabase, email, etc).
-      // Simulated 1.4s round-trip so loading state is visible.
-      await new Promise((res) => setTimeout(res, 1400));
+      const fd = new FormData(form);
+      const payload = {
+        nama: (fd.get("nama") as string) || undefined,
+        email: (fd.get("email") as string) || undefined,
+        kategori: (fd.get("kategori") as string) || "",
+        pesan: (fd.get("pesan") as string) || "",
+      };
+      const res = await fetch("/api/kotak-saran", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data.ok === false) {
+        throw new Error(data.error || `Gagal mengirim (HTTP ${res.status})`);
+      }
       setStatus("success");
       form.reset();
-      // Auto-dismiss success after 4s
       setTimeout(() => setStatus("idle"), 4000);
     } catch (err) {
       setStatus("error");

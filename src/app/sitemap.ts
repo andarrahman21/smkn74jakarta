@@ -10,11 +10,7 @@ const staticPaths = [
   "/",
   "/tentang",
   "/kontak",
-  "/galeri",
-  "/unduhan",
   "/mitra-dudi",
-  "/privasi",
-  "/syarat-layanan",
   // profil
   "/profil/sambutan",
   "/profil/visi-misi",

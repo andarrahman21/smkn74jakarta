@@ -1,12 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { LAYANAN_GROUPS } from "@/lib/site-content/layanan";
 
-type SubItem = { label: string; href?: string; children?: SubItem[] };
-type NavItem = { label: string; href?: string; children?: SubItem[] };
+type SubItem = { label: string; href?: string; linkKey?: string; children?: SubItem[] };
+type NavItem = { label: string; href?: string; linkKey?: string; children?: SubItem[] };
 
-const nav: NavItem[] = [
+// Menu Layanan dibangun dari registry (key link diatur di admin).
+const LAYANAN_NODE: NavItem = {
+  label: "Layanan",
+  children: LAYANAN_GROUPS.map((g) => ({
+    label: g.label,
+    children: g.items.map((it) => ({ label: it.label, linkKey: it.key })),
+  })),
+};
+
+const NAV: NavItem[] = [
   {
     label: "Profil Sekolah",
     children: [
@@ -47,56 +57,7 @@ const nav: NavItem[] = [
       { label: "Event", href: "/berita/event" },
     ],
   },
-  {
-    label: "Layanan",
-    children: [
-      {
-        label: "Akademik",
-        children: [
-          { label: "Permohonan Penerbitan Surat Akademik" },
-          { label: "Surat Ijin Tidak Masuk Sekolah" },
-          { label: "Surat Ijin Masuk Kelas" },
-          { label: "Surat Ijin Keluar Kelas" },
-          { label: "Surat Ijin Mengikuti Kegiatan" },
-        ],
-      },
-      {
-        label: "Kesiswaan",
-        children: [
-          { label: "Permohonan Penerbitan Surat Kesiswaan" },
-          { label: "Surat Ijin Kegiatan" },
-          { label: "Surat Keterangan" },
-          { label: "Surat Rekomendasi" },
-          { label: "Surat Tugas" },
-        ],
-      },
-      {
-        label: "Humas & DUDI",
-        children: [
-          { label: "Permohonan Penerbitan Surat HUMAS & DUDI" },
-          { label: "Permohonan Melaksanakan Kelas Industri / PKL" },
-          { label: "Permohonan Buku Jurnal Kelas Industri / PKL" },
-          { label: "Permohonan Pelaksanaan Kelas Industri / PKL" },
-          { label: "Surat Keterangan Telah Melaksanakan Kelas Industri / PKL" },
-        ],
-      },
-      {
-        label: "Sarana & Prasarana",
-        children: [
-          { label: "Permohonan Penerbitan Surat Sarana & Prasarana" },
-          { label: "Permohonan Kebutuhan Sarana & Prasarana" },
-          { label: "Permohonan Peminjaman Sarana & Prasarana" },
-        ],
-      },
-      {
-        label: "Bimbingan Konseling",
-        children: [
-          { label: "Surat Pengaduan Kejadian" },
-          { label: "Permohonan Janji Pelaksanaan Bimbingan Konseling" },
-        ],
-      },
-    ],
-  },
+  LAYANAN_NODE,
   {
     label: "Info Keuangan",
     href: "/info-keuangan",
@@ -139,6 +100,8 @@ function DropdownItems({ items, level = 0 }: { items: SubItem[]; level?: number 
           <li key={item.label} className="relative group/sub">
             <Link
               href={item.href ?? "#"}
+              target={item.href?.startsWith("http") ? "_blank" : undefined}
+              rel={item.href?.startsWith("http") ? "noopener noreferrer" : undefined}
               className="flex items-center justify-between gap-3 px-4 py-2 text-sm text-paper/85 hover:bg-white/8 hover:text-amber transition-colors"
             >
               <span>{item.label}</span>
@@ -162,9 +125,32 @@ function DropdownItems({ items, level = 0 }: { items: SubItem[]; level?: number 
   );
 }
 
-export function MainNav() {
+/** Normalisasi URL: path internal ("/...") dibiarkan; selainnya dipastikan absolut (https://). */
+function normalizeUrl(v: string): string {
+  const s = v.trim();
+  if (!s) return s;
+  if (s.startsWith("/") || s.startsWith("#")) return s;
+  if (/^https?:\/\//i.test(s)) return s;
+  if (/^(mailto:|tel:)/i.test(s)) return s;
+  return `https://${s}`;
+}
+
+/** Isi href tiap item dari `links` (berdasarkan linkKey). */
+function resolveNav(items: NavItem[], links?: Record<string, string>): NavItem[] {
+  return items.map((it) => {
+    const raw = it.linkKey ? links?.[it.linkKey]?.trim() : "";
+    return {
+      ...it,
+      href: it.href ?? (raw ? normalizeUrl(raw) : undefined),
+      children: it.children ? resolveNav(it.children, links) : undefined,
+    };
+  });
+}
+
+export function MainNav({ links }: { links?: Record<string, string> }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const nav = useMemo(() => resolveNav(NAV, links), [links]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -184,14 +170,17 @@ export function MainNav() {
       <div className="mx-auto max-w-7xl flex items-center justify-between px-8 h-20">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group shrink-0">
-          <div className="h-10 w-10 rounded-full bg-amber text-navy grid place-items-center font-display text-lg font-bold transition-transform group-hover:rotate-[-6deg]">
-            74
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.png"
+            alt="Logo SMK Negeri 74 Jakarta"
+            className="h-10 w-10 rounded-full object-contain transition-transform group-hover:rotate-[-6deg]"
+          />
           <div className="leading-tight text-paper">
             <p className="text-[9px] uppercase tracking-[0.18em] text-amber">
-              SMK
+              SMK Negeri
             </p>
-            <p className="font-display text-base font-semibold">Negeri 74</p>
+            <p className="font-display text-base font-semibold">74 Jakarta</p>
           </div>
         </Link>
 

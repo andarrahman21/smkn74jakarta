@@ -2,20 +2,26 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const teachers = [
-  { initials: "BS", name: "Drs. Bambang Sutiyono, M.Pd", role: "Kepala Sekolah", bg: "bg-moss",  ink: "text-paper" },
-  { initials: "WS", name: "Wahyu Setiawan, S.Pd, M.Pd", role: "Wakil Kurikulum", bg: "bg-navy",  ink: "text-paper" },
-  { initials: "SR", name: "Siti Rohayu, S.Kom",        role: "Teknik Komputer & Jaringan", bg: "bg-rust", ink: "text-paper" },
-  { initials: "AH", name: "Ahmad Hidayat, S.Pd",       role: "Animasi & Multimedia", bg: "bg-amber", ink: "text-navy" },
-  { initials: "DN", name: "Dewi Nurjanah, S.Pd",       role: "Bahasa Indonesia", bg: "bg-paper-soft", ink: "text-ink" },
-  { initials: "RP", name: "Rio Pramudita, S.Kom",      role: "Rekayasa Perangkat Lunak", bg: "bg-navy-deep", ink: "text-paper" },
-  { initials: "LK", name: "Lina Kartika, M.Pd",        role: "Akuntansi", bg: "bg-moss", ink: "text-paper" },
-  { initials: "FA", name: "Fadli Akbar, S.Pd",         role: "Olahraga", bg: "bg-rust", ink: "text-paper" },
-];
+export type GuruCard = {
+  initials: string;
+  name: string;
+  role: string;
+  bg: string;
+  ink: string;
+  photo: string | null;
+};
 
-const PAGES = 3; // split the 8 cards into 3 logical pages
+const PAGES = 3; // split the cards into 3 logical pages
 
-export function GuruSection() {
+export function GuruSection({
+  teachers,
+  eyebrow = "Pengurus & Tenaga Kependidikan",
+  heading = "Orang-orang yang membentuk sekolah.",
+}: {
+  teachers: GuruCard[];
+  eyebrow?: string;
+  heading?: string;
+}) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0); // 0..1
   const [atStart, setAtStart] = useState(true);
@@ -51,36 +57,27 @@ export function GuruSection() {
     ? 0
     : Math.min(PAGES - 1, Math.floor(progress * PAGES));
 
+  if (teachers.length === 0) return null;
+
   return (
     <section className="bg-white py-16 md:py-24 border-t border-black/5 overflow-hidden">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-12 reveal">
           <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-muted mb-3">
-              Pengurus & Tenaga Kependidikan
+            <p data-cms-key="guru.eyebrow" data-cms-type="text" className="text-xs uppercase tracking-[0.22em] text-muted mb-3">
+              {eyebrow}
             </p>
-            <h2 className="font-display headline-section max-w-2xl">
-              Orang-orang yang membentuk sekolah.
+            <h2 data-cms-key="guru.heading" data-cms-type="text" className="font-display headline-section max-w-2xl">
+              {heading}
             </h2>
           </div>
           <div className="flex items-center gap-3 md:gap-4">
-            {/* Functional page indicator — active segment widens & turns navy */}
-            <div className="flex items-center gap-1.5 mr-2">
-              {Array.from({ length: PAGES }).map((_, i) => (
-                <button
-                  key={i}
-                  aria-label={`Halaman ${i + 1}`}
-                  onClick={() => {
-                    const el = scrollerRef.current;
-                    if (!el) return;
-                    const max = el.scrollWidth - el.clientWidth;
-                    el.scrollTo({ left: (max * i) / (PAGES - 1), behavior: "smooth" });
-                  }}
-                  className={`h-1 rounded-full transition-all duration-500 ${
-                    activePage === i ? "w-10 bg-navy" : "w-4 bg-mist hover:bg-muted/60"
-                  }`}
-                />
-              ))}
+            {/* Functional page indicator — satu garis, thumb bergerak */}
+            <div className="relative h-1 w-24 rounded-full bg-mist mr-2 overflow-hidden">
+              <span
+                className="absolute inset-y-0 rounded-full bg-navy transition-all duration-500"
+                style={{ width: `${100 / PAGES}%`, left: `${(activePage * 100) / PAGES}%` }}
+              />
             </div>
 
             <button
@@ -111,32 +108,51 @@ export function GuruSection() {
 
       <div
         ref={scrollerRef}
-        className="flex gap-4 md:gap-5 overflow-x-auto snap-x snap-mandatory px-5 md:px-8 max-w-[calc(100%+0px)] mx-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex gap-4 md:gap-5 overflow-x-auto snap-x snap-mandatory px-5 md:px-8 scroll-pl-5 md:scroll-pl-8 xl:scroll-pl-[calc((100vw-80rem)/2+2rem)] max-w-[calc(100%+0px)] mx-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        <div className="shrink-0 w-[calc((100vw-80rem)/2)] hidden xl:block" />
+        <div className="shrink-0 w-0 xl:w-[calc((100vw-80rem)/2-2rem)]" aria-hidden />
         {teachers.map((t, i) => (
           <article
-            key={t.initials}
-            className={`${t.bg} ${t.ink} group relative snap-start shrink-0 w-[260px] sm:w-[300px] md:w-[316px] aspect-[316/454] rounded-2xl p-5 md:p-6 flex flex-col justify-between transition-transform duration-500 hover:-translate-y-2 cursor-pointer reveal`}
+            key={`${t.name}-${i}`}
+            className={`${t.bg} ${t.ink} group relative snap-start shrink-0 w-[260px] sm:w-[300px] md:w-[316px] aspect-[316/454] rounded-2xl p-5 md:p-6 flex flex-col justify-between overflow-hidden reveal`}
             style={{ animationDelay: `${i * 0.06}s` }}
           >
-            <p className="text-[10px] uppercase tracking-[0.22em] opacity-80">
-              {t.role}
-            </p>
+            {/* Foto (jika ada) */}
+            {t.photo && (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={t.photo}
+                  alt={t.name}
+                  className="absolute inset-0 h-full w-full object-cover scale-[1.06]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+              </>
+            )}
 
-            <div className="flex-1 grid place-items-center">
-              <span className="font-display text-display-xl italic opacity-90 transition-transform duration-700 group-hover:scale-110">
-                {t.initials}
-              </span>
-            </div>
+            {!t.photo && (
+              <p className="relative z-10 text-[10px] uppercase tracking-[0.22em] opacity-80">
+                {t.role}
+              </p>
+            )}
 
-            <div className="border-t border-current/15 pt-4">
+            {!t.photo && (
+              <div className="flex-1 grid place-items-center">
+                <span className="font-display text-display-xl italic opacity-90">
+                  {t.initials}
+                </span>
+              </div>
+            )}
+
+            <div className={`relative z-10 mt-auto border-t pt-4 ${t.photo ? "border-white/20 text-white" : "border-current/15"}`}>
               <p className="font-display text-base leading-snug">{t.name}</p>
-              <p className="text-[11px] opacity-70 mt-1">{t.role}</p>
+              <p className={`text-[11px] mt-1 ${t.photo ? "text-white/70" : "opacity-70"}`}>{t.role}</p>
             </div>
 
-            {/* Subtle gradient overlay on hover */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/0 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+            {/* Subtle gradient overlay on hover (non-foto) */}
+            {!t.photo && (
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/0 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+            )}
           </article>
         ))}
         <div className="shrink-0 w-8" />
