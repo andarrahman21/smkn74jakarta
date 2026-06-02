@@ -13,30 +13,38 @@ import { createPublicClient } from "@/lib/supabase/server";
 import { resolveSiteContent } from "@/lib/site-content/get";
 
 async function getHeroSlides(): Promise<HeroSlide[]> {
-  const supabase = createPublicClient();
-  const { data } = await supabase
-    .from("hero_slides")
-    .select("id, eyebrow, head, tag, caption, year_label, image_url, image_alt")
-    .eq("status", "published")
-    .order("sort_order", { ascending: true });
-  return data ?? [];
+  try {
+    const supabase = createPublicClient();
+    const { data } = await supabase
+      .from("hero_slides")
+      .select("id, eyebrow, head, tag, caption, year_label, image_url, image_alt")
+      .eq("status", "published")
+      .order("sort_order", { ascending: true });
+    return data ?? [];
+  } catch {
+    return [];
+  }
 }
 
 async function getGuru(): Promise<GuruCard[]> {
-  const supabase = createPublicClient();
-  const { data } = await supabase
-    .from("daftar_guru")
-    .select("initials, name, role, bg, ink, photo_url")
-    .eq("status", "published")
-    .order("sort_order", { ascending: true });
-  return (data ?? []).map((g) => ({
-    initials: g.initials,
-    name: g.name,
-    role: g.role,
-    bg: g.bg,
-    ink: g.ink,
-    photo: g.photo_url ?? null,
-  }));
+  try {
+    const supabase = createPublicClient();
+    const { data } = await supabase
+      .from("daftar_guru")
+      .select("initials, name, role, bg, ink, photo_url")
+      .eq("status", "published")
+      .order("sort_order", { ascending: true });
+    return (data ?? []).map((g) => ({
+      initials: g.initials,
+      name: g.name,
+      role: g.role,
+      bg: g.bg,
+      ink: g.ink,
+      photo: g.photo_url ?? null,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export default async function Home() {

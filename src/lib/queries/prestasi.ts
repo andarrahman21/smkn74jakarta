@@ -43,49 +43,65 @@ function toPrestasi(r: Row): Prestasi {
 }
 
 export async function getPrestasiList(limit?: number): Promise<Prestasi[]> {
-  const supabase = createPublicClient();
-  let q = supabase
-    .from("prestasi")
-    .select(COLS)
-    .eq("status", "published")
-    .order("achieved_at", { ascending: false });
-  if (limit) q = q.limit(limit);
-  const { data, error } = await q;
-  if (error) throw error;
-  return (data ?? []).map((r) => toPrestasi(r as Row));
+  try {
+    const supabase = createPublicClient();
+    let q = supabase
+      .from("prestasi")
+      .select(COLS)
+      .eq("status", "published")
+      .order("achieved_at", { ascending: false });
+    if (limit) q = q.limit(limit);
+    const { data, error } = await q;
+    if (error) throw error;
+    return (data ?? []).map((r) => toPrestasi(r as Row));
+  } catch {
+    return [];
+  }
 }
 
 export async function getPrestasi(slug: string): Promise<Prestasi | null> {
-  const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("prestasi")
-    .select(COLS)
-    .eq("slug", slug)
-    .eq("status", "published")
-    .maybeSingle();
-  if (error) throw error;
-  return data ? toPrestasi(data as Row) : null;
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("prestasi")
+      .select(COLS)
+      .eq("slug", slug)
+      .eq("status", "published")
+      .maybeSingle();
+    if (error) throw error;
+    return data ? toPrestasi(data as Row) : null;
+  } catch {
+    return null;
+  }
 }
 
 export async function getPrestasiSlugs(): Promise<string[]> {
-  const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("prestasi")
-    .select("slug")
-    .eq("status", "published");
-  if (error) throw error;
-  return (data ?? []).map((r) => r.slug);
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("prestasi")
+      .select("slug")
+      .eq("status", "published");
+    if (error) throw error;
+    return (data ?? []).map((r) => r.slug);
+  } catch {
+    return [];
+  }
 }
 
 /** Untuk PrestasiSection counter di homepage */
 export async function getPrestasiStats(): Promise<{ total: number; nasional: number }> {
-  const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("prestasi")
-    .select("level")
-    .eq("status", "published");
-  if (error) throw error;
-  const rows = data ?? [];
-  const nasional = rows.filter((r) => r.level === "Nasional" || r.level === "Internasional").length;
-  return { total: rows.length, nasional };
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("prestasi")
+      .select("level")
+      .eq("status", "published");
+    if (error) throw error;
+    const rows = data ?? [];
+    const nasional = rows.filter((r) => r.level === "Nasional" || r.level === "Internasional").length;
+    return { total: rows.length, nasional };
+  } catch {
+    return { total: 0, nasional: 0 };
+  }
 }

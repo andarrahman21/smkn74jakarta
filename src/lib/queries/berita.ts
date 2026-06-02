@@ -51,42 +51,54 @@ function toBerita(r: Row): Berita {
 }
 
 export async function getBeritaList(limit?: number): Promise<Berita[]> {
-  const supabase = createPublicClient();
-  const now = NOW();
-  let q = supabase
-    .from("berita")
-    .select(COLS)
-    .eq("status", "published")
-    .lte("published_at", now)
-    .order("published_at", { ascending: false });
-  if (limit) q = q.limit(limit);
-  const { data, error } = await q;
-  if (error) throw error;
-  return (data ?? []).map((r) => toBerita(r as Row));
+  try {
+    const supabase = createPublicClient();
+    const now = NOW();
+    let q = supabase
+      .from("berita")
+      .select(COLS)
+      .eq("status", "published")
+      .lte("published_at", now)
+      .order("published_at", { ascending: false });
+    if (limit) q = q.limit(limit);
+    const { data, error } = await q;
+    if (error) throw error;
+    return (data ?? []).map((r) => toBerita(r as Row));
+  } catch {
+    return [];
+  }
 }
 
 export async function getBerita(slug: string): Promise<Berita | null> {
-  const supabase = createPublicClient();
-  const now = NOW();
-  const { data, error } = await supabase
-    .from("berita")
-    .select(COLS)
-    .eq("slug", slug)
-    .eq("status", "published")
-    .lte("published_at", now)
-    .maybeSingle();
-  if (error) throw error;
-  return data ? toBerita(data as Row) : null;
+  try {
+    const supabase = createPublicClient();
+    const now = NOW();
+    const { data, error } = await supabase
+      .from("berita")
+      .select(COLS)
+      .eq("slug", slug)
+      .eq("status", "published")
+      .lte("published_at", now)
+      .maybeSingle();
+    if (error) throw error;
+    return data ? toBerita(data as Row) : null;
+  } catch {
+    return null;
+  }
 }
 
 export async function getBeritaSlugs(): Promise<string[]> {
-  const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("berita")
-    .select("slug")
-    .eq("status", "published");
-  if (error) throw error;
-  return (data ?? []).map((r) => r.slug);
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("berita")
+      .select("slug")
+      .eq("status", "published");
+    if (error) throw error;
+    return (data ?? []).map((r) => r.slug);
+  } catch {
+    return [];
+  }
 }
 
 // Mark unused for now (kept for potential future filter UI)

@@ -57,39 +57,51 @@ function toPrestasiCms(r: Row): PrestasiCmsPost {
 const NOW = () => new Date().toISOString();
 
 export async function getPrestasiCmsList(limit?: number): Promise<PrestasiCmsPost[]> {
-  const supabase = createPublicClient();
-  let q = supabase
-    .from("prestasi_cms")
-    .select(COLS)
-    .eq("status", "published")
-    .lte("published_at", NOW())
-    .order("published_at", { ascending: false });
-  if (limit) q = q.limit(limit);
-  const { data, error } = await q;
-  if (error) throw error;
-  return (data ?? []).map((r) => toPrestasiCms(r as Row));
+  try {
+    const supabase = createPublicClient();
+    let q = supabase
+      .from("prestasi_cms")
+      .select(COLS)
+      .eq("status", "published")
+      .lte("published_at", NOW())
+      .order("published_at", { ascending: false });
+    if (limit) q = q.limit(limit);
+    const { data, error } = await q;
+    if (error) throw error;
+    return (data ?? []).map((r) => toPrestasiCms(r as Row));
+  } catch {
+    return [];
+  }
 }
 
 export async function getPrestasiCms(slug: string): Promise<PrestasiCmsPost | null> {
-  const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("prestasi_cms")
-    .select(COLS)
-    .eq("slug", slug)
-    .eq("status", "published")
-    .lte("published_at", NOW())
-    .maybeSingle();
-  if (error) throw error;
-  return data ? toPrestasiCms(data as Row) : null;
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("prestasi_cms")
+      .select(COLS)
+      .eq("slug", slug)
+      .eq("status", "published")
+      .lte("published_at", NOW())
+      .maybeSingle();
+    if (error) throw error;
+    return data ? toPrestasiCms(data as Row) : null;
+  } catch {
+    return null;
+  }
 }
 
 export async function getPrestasiCmsSlugs(): Promise<string[]> {
-  const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("prestasi_cms")
-    .select("slug")
-    .eq("status", "published")
-    .lte("published_at", NOW());
-  if (error) throw error;
-  return (data ?? []).map((r) => r.slug);
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("prestasi_cms")
+      .select("slug")
+      .eq("status", "published")
+      .lte("published_at", NOW());
+    if (error) throw error;
+    return (data ?? []).map((r) => r.slug);
+  } catch {
+    return [];
+  }
 }

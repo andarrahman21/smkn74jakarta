@@ -47,27 +47,39 @@ function toEvent(r: Row): EventItem {
 }
 
 export async function getEvents(): Promise<EventItem[]> {
-  const supabase = createPublicClient();
-  // Sort: Akan datang dulu (earlier starts_at first), lalu Selesai (latest first)
-  const { data, error } = await supabase
-    .from("event")
-    .select(COLS)
-    .order("status", { ascending: true })   // 'Akan datang' < 'Selesai' alphabetically
-    .order("starts_at", { ascending: false, nullsFirst: false });
-  if (error) throw error;
-  return (data ?? []).map((r) => toEvent(r as Row));
+  try {
+    const supabase = createPublicClient();
+    // Sort: Akan datang dulu (earlier starts_at first), lalu Selesai (latest first)
+    const { data, error } = await supabase
+      .from("event")
+      .select(COLS)
+      .order("status", { ascending: true })   // 'Akan datang' < 'Selesai' alphabetically
+      .order("starts_at", { ascending: false, nullsFirst: false });
+    if (error) throw error;
+    return (data ?? []).map((r) => toEvent(r as Row));
+  } catch {
+    return [];
+  }
 }
 
 export async function getEvent(slug: string): Promise<EventItem | null> {
-  const supabase = createPublicClient();
-  const { data, error } = await supabase.from("event").select(COLS).eq("slug", slug).maybeSingle();
-  if (error) throw error;
-  return data ? toEvent(data as Row) : null;
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase.from("event").select(COLS).eq("slug", slug).maybeSingle();
+    if (error) throw error;
+    return data ? toEvent(data as Row) : null;
+  } catch {
+    return null;
+  }
 }
 
 export async function getEventSlugs(): Promise<string[]> {
-  const supabase = createPublicClient();
-  const { data, error } = await supabase.from("event").select("slug");
-  if (error) throw error;
-  return (data ?? []).map((r) => r.slug);
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase.from("event").select("slug");
+    if (error) throw error;
+    return (data ?? []).map((r) => r.slug);
+  } catch {
+    return [];
+  }
 }

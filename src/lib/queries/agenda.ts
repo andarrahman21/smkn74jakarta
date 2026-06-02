@@ -30,16 +30,21 @@ function toAgenda(r: Row): Agenda {
 }
 
 export async function getAgendaList(): Promise<Agenda[]> {
-  const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("agenda")
-    .select(COLS)
-    .order("scheduled_at", { ascending: true });
-  if (error) throw error;
-  return (data ?? []).map((r) => toAgenda(r as Row));
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("agenda")
+      .select(COLS)
+      .order("scheduled_at", { ascending: true });
+    if (error) throw error;
+    return (data ?? []).map((r) => toAgenda(r as Row));
+  } catch {
+    return [];
+  }
 }
 
 export async function getAgendaByMonth(): Promise<[string, Agenda[]][]> {
+  try {
   const list = await getAgendaList();
   const map = new Map<string, Agenda[]>();
   for (const a of list) {
@@ -58,4 +63,7 @@ export async function getAgendaByMonth(): Promise<[string, Agenda[]][]> {
     if (yA !== yB) return Number(yB) - Number(yA);
     return monthIdx(mB) - monthIdx(mA);
   });
+  } catch {
+    return [];
+  }
 }

@@ -10,12 +10,16 @@ export const metadata: Metadata = {
 };
 
 async function getMisi(): Promise<{ id: string; title: string; body: string }[]> {
-  const supabase = createPublicClient();
-  const { data } = await supabase
-    .from("misi")
-    .select("id, title, body")
-    .order("sort_order", { ascending: true });
-  return data ?? [];
+  try {
+    const supabase = createPublicClient();
+    const { data } = await supabase
+      .from("misi")
+      .select("id, title, body")
+      .order("sort_order", { ascending: true });
+    return data ?? [];
+  } catch {
+    return [];
+  }
 }
 
 export default async function Page() {
