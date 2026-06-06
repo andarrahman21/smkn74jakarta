@@ -5,6 +5,13 @@ import { EditOverlayMount } from "@/components/cms/EditOverlayMount";
 import { resolveSiteContent } from "@/lib/site-content/get";
 
 /**
+ * Revalidasi berbasis waktu (ISR) sebagai jaring pengaman: halaman otomatis
+ * ambil data terbaru maksimal tiap 60 detik. Update instan tetap berjalan
+ * lewat revalidatePath("/", "layout") saat konten disimpan di admin.
+ */
+export const revalidate = 60;
+
+/**
  * Layout untuk situs publik: nav + main + footer + skip-to-content.
  * /admin/* tidak menggunakan layout ini.
  */
