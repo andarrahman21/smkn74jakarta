@@ -6,10 +6,11 @@ import { resolveSiteContent } from "@/lib/site-content/get";
 
 /**
  * Revalidasi berbasis waktu (ISR) sebagai jaring pengaman: halaman otomatis
- * ambil data terbaru maksimal tiap 60 detik. Update instan tetap berjalan
- * lewat revalidatePath("/", "layout") saat konten disimpan di admin.
+ * ambil data terbaru maksimal tiap 1 jam. Update instan tetap berjalan
+ * lewat revalidatePath("/", "layout") saat konten disimpan di admin —
+ * jadi TTL panjang ini hanya fallback (lazim untuk profil sekolah).
  */
-export const revalidate = 60;
+export const revalidate = 3600;
 
 /**
  * Layout untuk situs publik: nav + main + footer + skip-to-content.
