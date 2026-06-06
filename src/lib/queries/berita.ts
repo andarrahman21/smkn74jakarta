@@ -32,6 +32,7 @@ function toBerita(r: Row): Berita {
     id: r.id,
     slug: r.slug,
     num: r.num,
+    month: formatIndoDateParts(r.published_at).monthShort,
     tag: r.tag,
     bg: r.bg,
     date: formatIndoDate(r.published_at),

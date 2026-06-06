@@ -30,7 +30,10 @@ export function BeritaList({ items }: { items: (Berita & { id: string })[] }) {
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
-                <span className="absolute top-4 left-4 inline-block px-3 py-1 bg-amber text-navy text-[10px] uppercase tracking-widest font-semibold rounded-sm z-10">{b.num}</span>
+                <span className="absolute top-4 left-4 inline-flex flex-col items-center leading-none px-2.5 py-1.5 bg-amber text-navy rounded-sm z-10">
+                  <span className="text-[13px] font-bold">{b.num}</span>
+                  <span className="text-[8px] uppercase tracking-widest font-semibold mt-0.5">{b.month}</span>
+                </span>
                 <span className="absolute top-4 right-4 text-[10px] uppercase tracking-widest text-paper z-10 drop-shadow">{b.tag}</span>
               </div>
               <div className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-muted mb-2">

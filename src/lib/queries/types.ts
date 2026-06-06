@@ -26,6 +26,7 @@ export type Berita = {
   id: string;
   slug: string;
   num: string;
+  month: string;    // "Jun" (short, untuk badge)
   tag: string;
   bg: string;
   date: string;     // "12 Mei 2026"
