@@ -17,7 +17,6 @@ const staticPaths = [
   "/profil/sarana-prasarana",
   "/profil/struktur",
   "/profil/struktur/manajemen",
-  "/profil/struktur/tenaga-kependidikan",
   "/profil/struktur/komite",
   "/profil/struktur/osis",
   "/profil/struktur/mpk",

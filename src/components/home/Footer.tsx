@@ -84,11 +84,8 @@ export async function Footer() {
 
           {/* Credibility badges */}
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <div data-cms-key="footer.badge_1" data-cms-type="text" data-cms-label="Badge 1" className="px-3 py-1.5 rounded-md border border-amber/30 bg-amber/10 text-amber text-[10px] uppercase tracking-widest font-semibold">
-              {cms["footer.badge_1"] ?? "Akreditasi A"}
-            </div>
-            <div data-cms-key="footer.badge_2" data-cms-type="text" data-cms-label="Badge 2" className="px-3 py-1.5 rounded-md border border-white/15 text-paper/70 text-[10px] uppercase tracking-widest">
-              {cms["footer.badge_2"] ?? "Kemendikbudristek"}
+            <div data-cms-key="footer.badge_2" data-cms-type="text" data-cms-label="Badge 1" className="px-3 py-1.5 rounded-md border border-white/15 text-paper/70 text-[10px] uppercase tracking-widest">
+              {cms["footer.badge_2"] ?? "Kemendikdasmen"}
             </div>
             <div data-cms-key="footer.badge_3" data-cms-type="text" data-cms-label="Badge 3" className="px-3 py-1.5 rounded-md border border-white/15 text-paper/70 text-[10px] uppercase tracking-widest">
               {cms["footer.badge_3"] ?? "Pemprov DKI"}

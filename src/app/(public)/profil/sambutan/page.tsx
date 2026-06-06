@@ -129,10 +129,10 @@ export default async function SambutanPage() {
                   {cms["sambutan.links_label"] ?? "Tautan Cepat"}
                 </p>
                 {[
-                  ["Visi & Misi", "#visi-misi"],
-                  ["Struktur Organisasi", "#struktur"],
-                  ["Tenaga Pendidik", "#tendik"],
-                  ["Sarana & Prasarana", "#sarana"],
+                  ["Visi & Misi", "/profil/visi-misi"],
+                  ["Struktur Organisasi", "/profil/struktur"],
+                  ["Tenaga Pendidik", "/profil/tenaga-pendidik"],
+                  ["Sarana & Prasarana", "/profil/sarana-prasarana"],
                 ].map(([label, href], i) => (
                   <Link
                     key={label}
@@ -241,7 +241,7 @@ export default async function SambutanPage() {
                 tag: "Profil",
                 title: "Visi & Misi Sekolah",
                 body: "Apa yang ingin kami capai, dan bagaimana kami menjalankannya setiap hari.",
-                href: "#visi-misi",
+                href: "/profil/visi-misi",
                 bg: "bg-navy",
                 ink: "text-paper",
               },
@@ -249,7 +249,7 @@ export default async function SambutanPage() {
                 tag: "Profil",
                 title: "Struktur Organisasi",
                 body: "Manajemen sekolah, tenaga kependidikan, komite, OSIS, dan MPK.",
-                href: "#struktur",
+                href: "/profil/struktur",
                 bg: "bg-amber",
                 ink: "text-navy",
               },
@@ -257,7 +257,7 @@ export default async function SambutanPage() {
                 tag: "Akademik",
                 title: "Konsentrasi Keahlian",
                 body: "Empat jurusan seni: Tari, Musik, Karawitan, dan Teater.",
-                href: "#keahlian",
+                href: "/profil/keahlian",
                 bg: "bg-moss",
                 ink: "text-paper",
               },

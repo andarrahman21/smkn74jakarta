@@ -2,8 +2,10 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient, isAdminEmail } from "@/lib/supabase/admin";
 
-const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
-const ALLOWED = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
+const MAX_PDF_BYTES = 30 * 1024 * 1024; // 30 MB
+const ALLOWED_IMAGES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
+const ALLOWED = [...ALLOWED_IMAGES, "application/pdf"];
 
 export async function POST(req: Request) {
   // 1) Pastikan request datang dari admin yang sudah login
@@ -28,8 +30,10 @@ export async function POST(req: Request) {
   if (!ALLOWED.includes(file.type)) {
     return NextResponse.json({ error: `Tipe file tidak didukung: ${file.type}` }, { status: 400 });
   }
-  if (file.size > MAX_BYTES) {
-    return NextResponse.json({ error: "Ukuran maksimal 5 MB." }, { status: 400 });
+  const isPdf = file.type === "application/pdf";
+  const maxBytes = isPdf ? MAX_PDF_BYTES : MAX_IMAGE_BYTES;
+  if (file.size > maxBytes) {
+    return NextResponse.json({ error: `Ukuran maksimal ${isPdf ? "30" : "5"} MB.` }, { status: 400 });
   }
 
   // 3) Upload ke Storage

@@ -52,24 +52,38 @@ export default async function Page() {
       <section className="bg-paper py-12 md:py-16 border-b border-black/5">
         <div className="mx-auto max-w-7xl px-5 md:px-8 grid grid-cols-1 md:grid-cols-3 gap-5">
           {[
-            { icon: "✉", title: "Email Umum",      value: "info@smkn74.sch.id",   href: "mailto:info@smkn74.sch.id" },
-            { icon: "☎", title: "Telepon",         value: "(021) 7864-216",       href: "tel:+62217864216" },
-            { icon: "◎", title: "Lokasi",          value: "Jagakarsa, Jakarta Selatan", href: "#denah" },
-          ].map((q, i) => (
+            { type: "email", icon: "✉", title: "Email Umum",     value: "info@smkn74.sch.id" },
+            { type: "tel",   icon: "☎", title: "Telepon",        value: "(021) 7864-216" },
+            { type: "map",   icon: "◎", title: "Lokasi",         value: "Jagakarsa, Jakarta Selatan", href: "#denah" },
+            { type: "wa",    icon: "✆", title: "WhatsApp Humas", value: "0812-5389-1201" },
+            { type: "wa",    icon: "✆", title: "WhatsApp PPDB",  value: "0812-5389-1201" },
+          ].map((q, i) => {
+            const value = cms[`kontak-page.quick.${i}.value`] ?? q.value;
+            const digits = value.replace(/\D/g, "");
+            const href =
+              q.type === "email" ? `mailto:${value}`
+              : q.type === "tel" ? `tel:${digits}`
+              : q.type === "wa" ? `https://wa.me/${digits}`
+              : (q.href ?? "#");
+            const external = href.startsWith("http");
+            return (
             <a
               key={q.title}
-              href={q.href}
+              href={href}
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
               className="reveal group flex items-center gap-4 p-5 bg-white border border-black/5 rounded-2xl hover:border-amber hover:-translate-y-0.5 transition-all duration-300"
               style={{ animationDelay: `${i * 0.08}s` }}
             >
               <span className="h-12 w-12 rounded-full bg-navy text-amber grid place-items-center text-xl">{q.icon}</span>
               <div>
                 <p data-cms-key={`kontak-page.quick.${i}.title`} data-cms-type="text" data-cms-label="Judul Kontak Cepat" className="text-[10px] uppercase tracking-widest text-muted">{cms[`kontak-page.quick.${i}.title`] ?? q.title}</p>
-                <p data-cms-key={`kontak-page.quick.${i}.value`} data-cms-type="text" data-cms-label="Nilai Kontak Cepat" className="font-medium text-ink group-hover:text-navy transition-colors">{cms[`kontak-page.quick.${i}.value`] ?? q.value}</p>
+                <p data-cms-key={`kontak-page.quick.${i}.value`} data-cms-type="text" data-cms-label="Nilai / Nomor (link otomatis)" className="font-medium text-ink group-hover:text-navy transition-colors">{value}</p>
               </div>
               <span className="ml-auto opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition">→</span>
             </a>
-          ))}
+            );
+          })}
         </div>
       </section>
 

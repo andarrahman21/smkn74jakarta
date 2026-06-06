@@ -39,7 +39,6 @@ export const PAGES: PageEntry[] = [
   { path: "/profil/sarana-prasarana", title: "Sarana & Prasarana", group: "Profil Sekolah", editable: true },
   { path: "/profil/struktur", title: "Struktur Organisasi", group: "Profil Sekolah", editable: true },
   { path: "/profil/struktur/manajemen", title: "Struktur — Manajemen", group: "Profil Sekolah", editable: true },
-  { path: "/profil/struktur/tenaga-kependidikan", title: "Struktur — Tenaga Kependidikan", group: "Profil Sekolah", editable: true },
   { path: "/profil/struktur/komite", title: "Struktur — Komite", group: "Profil Sekolah", editable: true },
   { path: "/profil/struktur/osis", title: "Struktur — OSIS", group: "Profil Sekolah", editable: true },
   { path: "/profil/struktur/mpk", title: "Struktur — MPK", group: "Profil Sekolah", editable: true },
@@ -65,6 +64,7 @@ export const PAGES: PageEntry[] = [
   { path: "/info-keuangan/bop", title: "Info Keuangan — BOP", group: "Layanan & Lainnya", editable: true },
   { path: "/info-keuangan/bos", title: "Info Keuangan — BOS", group: "Layanan & Lainnya", editable: true },
   { path: "/kontak", title: "Kontak", group: "Layanan & Lainnya", editable: true },
+  { path: "/ppdb", title: "PPDB / SPMB", group: "Layanan & Lainnya", editable: true },
 ];
 
 export const PAGE_GROUPS: PageGroup[] = [

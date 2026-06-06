@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export type GuruCard = {
   initials: string;
@@ -86,10 +87,7 @@ export function GuruSection({
               disabled={atStart}
               className="h-11 w-11 rounded-full border border-black/10 grid place-items-center transition-all hover:bg-paper-soft disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M8.5 3.5 L5 7 L8.5 10.5" />
-                <path d="M5 7 L12 7" />
-              </svg>
+              <ArrowLeft size={16} />
             </button>
             <button
               onClick={() => scrollBy(1)}
@@ -97,10 +95,7 @@ export function GuruSection({
               disabled={atEnd}
               className="h-11 w-11 rounded-full bg-amber text-navy grid place-items-center transition-all hover:scale-105 hover:bg-amber-soft disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5.5 3.5 L9 7 L5.5 10.5" />
-                <path d="M9 7 L2 7" />
-              </svg>
+              <ArrowRight size={16} />
             </button>
           </div>
         </div>

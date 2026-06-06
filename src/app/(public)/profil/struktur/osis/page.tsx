@@ -3,19 +3,9 @@ import { PageHeader } from "@/components/profil/PageHeader";
 import { PeopleSection } from "@/components/profil/PeopleSection";
 import { RelatedCards } from "@/components/profil/RelatedCards";
 import { resolveSiteContent } from "@/lib/site-content/get";
+import { getStrukturProfil, toPeople } from "@/lib/struktur-data";
 
 export const metadata: Metadata = { title: "OSIS — SMKN 74 Jakarta" };
-
-const people = [
-  { initials: "RA", name: "Rangga Aditya", role: "Ketua OSIS", bg: "bg-navy" },
-  { initials: "PS", name: "Putri Syahara", role: "Wakil Ketua", bg: "bg-amber", ink: "text-navy" },
-  { initials: "AM", name: "Anisa Maulida", role: "Sekretaris", bg: "bg-moss" },
-  { initials: "BF", name: "Bagus Firmansyah", role: "Bendahara", bg: "bg-rust" },
-  { initials: "KH", name: "Kharisma Hadi", role: "Sie Kerohanian", bg: "bg-navy-deep" },
-  { initials: "LP", name: "Lestari Pertiwi", role: "Sie Olahraga", bg: "bg-navy" },
-  { initials: "DA", name: "Dimas Arifin", role: "Sie Seni & Budaya", bg: "bg-amber", ink: "text-navy" },
-  { initials: "SM", name: "Sari Melati", role: "Sie Humas", bg: "bg-moss" },
-];
 
 const programs = [
   { n: "01", t: "Pekan Seni", d: "Festival seni tahunan menampilkan karya semua jurusan." },
@@ -26,11 +16,7 @@ const programs = [
 
 export default async function Page() {
   const cms = await resolveSiteContent();
-  const peopleResolved = people.map((p, i) => ({
-    ...p,
-    name: cms[`struktur-osis.${i}.name`] ?? p.name,
-    role: cms[`struktur-osis.${i}.role`] ?? p.role,
-  }));
+  const peopleResolved = toPeople(await getStrukturProfil("osis"));
   return (
     <>
       <PageHeader
@@ -71,7 +57,6 @@ export default async function Page() {
 
       <PeopleSection
         people={peopleResolved}
-        cmsPrefix="struktur-osis"
         heading={cms["struktur-osis.heading"] ?? "Pengurus OSIS periode 2025/2026."}
         headingKey="struktur-osis.heading"
         eyebrowKey="struktur-osis.eyebrow"

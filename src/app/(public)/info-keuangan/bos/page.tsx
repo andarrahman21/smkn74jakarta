@@ -45,7 +45,7 @@ export default async function Page() {
       ]}
       related={[
         { tag: "Keuangan", title: "BOP — Biaya Operasional Pendidikan", body: "Bantuan dari Pemprov DKI Jakarta.", href: "/info-keuangan/bop", bg: "bg-navy", ink: "text-paper" },
-        { tag: "Profil",   title: "Tenaga Kependidikan", body: "Tim Tata Usaha & administrasi.", href: "/profil/struktur/tenaga-kependidikan", bg: "bg-moss", ink: "text-paper" },
+        { tag: "Profil",   title: "Tenaga Pendidik & Kependidikan", body: "Guru & tim administrasi.", href: "/profil/tenaga-pendidik", bg: "bg-moss", ink: "text-paper" },
         { tag: "Berita",   title: "Informasi Sekolah", body: "Panduan & kebijakan.", href: "/berita/informasi-sekolah", bg: "bg-rust", ink: "text-paper" },
       ]}
     />

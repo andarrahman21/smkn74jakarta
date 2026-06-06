@@ -11,19 +11,24 @@ type Props = {
   defaultValue?: string;
   placeholder?: string;
   required?: boolean;
+  onValueChange?: (value: string) => void;
 };
 
 function norm(o: Option): { value: string; label: string } {
   return typeof o === "string" ? { value: o, label: o } : o;
 }
 
-export function Select({ name, options, defaultValue = "", placeholder = "Pilih…", required }: Props) {
+export function Select({ name, options, defaultValue = "", placeholder = "Pilih…", required, onValueChange }: Props) {
   const [value, setValue] = useState<string>(defaultValue);
+  const handleChange = (v: string) => {
+    setValue(v);
+    onValueChange?.(v);
+  };
 
   return (
     <>
       <input type="hidden" name={name} value={value} required={required} />
-      <RSelect.Root value={value} onValueChange={setValue}>
+      <RSelect.Root value={value} onValueChange={handleChange}>
         <RSelect.Trigger
           className="w-full h-11 px-4 rounded-xl border border-black/10 bg-white text-base text-left flex items-center justify-between gap-2 focus:outline-none focus:border-amber focus:ring-2 focus:ring-amber/20 transition data-[state=open]:border-amber data-[state=open]:ring-2 data-[state=open]:ring-amber/20"
           aria-label={name}

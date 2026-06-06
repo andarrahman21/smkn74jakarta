@@ -28,7 +28,6 @@ const NAV: NavItem[] = [
         href: "/profil/struktur",
         children: [
           { label: "Manajemen Sekolah", href: "/profil/struktur/manajemen" },
-          { label: "Tenaga Kependidikan", href: "/profil/struktur/tenaga-kependidikan" },
           { label: "Komite", href: "/profil/struktur/komite" },
           { label: "OSIS", href: "/profil/struktur/osis" },
           { label: "MPK", href: "/profil/struktur/mpk" },
@@ -52,7 +51,7 @@ const NAV: NavItem[] = [
     label: "Berita",
     href: "/berita",
     children: [
-      { label: "Informasi Sekolah", href: "/berita/informasi-sekolah" },
+      { label: "Informasi Sekolah", href: "/pengumuman" },
       { label: "Agenda", href: "/berita/agenda" },
       { label: "Event", href: "/berita/event" },
     ],
@@ -65,6 +64,10 @@ const NAV: NavItem[] = [
       { label: "BOP", href: "/info-keuangan/bop" },
       { label: "BOS", href: "/info-keuangan/bos" },
     ],
+  },
+  {
+    label: "Daftar PPDB",
+    href: "/ppdb",
   },
   {
     label: "Kontak",

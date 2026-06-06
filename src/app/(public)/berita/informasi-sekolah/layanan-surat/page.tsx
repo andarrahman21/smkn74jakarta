@@ -145,7 +145,7 @@ export default async function Page() {
 
       <RelatedCards
         items={[
-          { tag: "Profil", title: "Tenaga Kependidikan", body: "Tim Tata Usaha yang melayani.", href: "/profil/struktur/tenaga-kependidikan", bg: "bg-navy", ink: "text-paper" },
+          { tag: "Profil", title: "Tenaga Pendidik & Kependidikan", body: "Guru & tim Tata Usaha.", href: "/profil/tenaga-pendidik", bg: "bg-navy", ink: "text-paper" },
           { tag: "Kontak", title: "Hubungi TU", body: "Telepon, email, alamat.", href: "/kontak", bg: "bg-amber", ink: "text-navy" },
           { tag: "Informasi", title: "Tata Tertib", body: "Aturan akademik & sosial.", href: "/berita/informasi-sekolah/tata-tertib", bg: "bg-moss", ink: "text-paper" },
         ]}

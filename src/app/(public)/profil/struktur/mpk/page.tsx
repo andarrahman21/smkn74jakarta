@@ -3,17 +3,9 @@ import { PageHeader } from "@/components/profil/PageHeader";
 import { PeopleSection } from "@/components/profil/PeopleSection";
 import { RelatedCards } from "@/components/profil/RelatedCards";
 import { resolveSiteContent } from "@/lib/site-content/get";
+import { getStrukturProfil, toPeople } from "@/lib/struktur-data";
 
 export const metadata: Metadata = { title: "MPK — SMKN 74 Jakarta" };
-
-const people = [
-  { initials: "FR", name: "Faiz Rahmadhani", role: "Ketua MPK", bg: "bg-navy" },
-  { initials: "NH", name: "Naila Hafidza", role: "Wakil Ketua", bg: "bg-amber", ink: "text-navy" },
-  { initials: "ZA", name: "Zahra Aprilia", role: "Sekretaris", bg: "bg-moss" },
-  { initials: "RB", name: "Reza Bachtiar", role: "Komisi I — Konstitusi", bg: "bg-rust" },
-  { initials: "AL", name: "Adelia Lestari", role: "Komisi II — Anggaran", bg: "bg-navy-deep" },
-  { initials: "GY", name: "Gilang Yulianto", role: "Komisi III — Aspirasi", bg: "bg-navy" },
-];
 
 const stats = [
   { n: "36", l: "Anggota perwakilan" },
@@ -24,11 +16,7 @@ const stats = [
 
 export default async function Page() {
   const cms = await resolveSiteContent();
-  const peopleResolved = people.map((p, i) => ({
-    ...p,
-    name: cms[`struktur-mpk.${i}.name`] ?? p.name,
-    role: cms[`struktur-mpk.${i}.role`] ?? p.role,
-  }));
+  const peopleResolved = toPeople(await getStrukturProfil("mpk"));
   return (
     <>
       <PageHeader
@@ -68,7 +56,6 @@ export default async function Page() {
 
       <PeopleSection
         people={peopleResolved}
-        cmsPrefix="struktur-mpk"
         heading={cms["struktur-mpk.heading"] ?? "Pimpinan MPK 2025/2026."}
         headingKey="struktur-mpk.heading"
         eyebrowKey="struktur-mpk.eyebrow"

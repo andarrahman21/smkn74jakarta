@@ -2,6 +2,23 @@ import Link from "next/link";
 import { PageHeader } from "./PageHeader";
 import { RelatedCards, type Related } from "./RelatedCards";
 import type { SiteContent } from "@/lib/site-content/get";
+import { createPublicClient } from "@/lib/supabase/server";
+import { ModulAjarSection } from "@/components/modul/ModulAjarSection";
+import type { ModulAjar } from "@/lib/modul-ajar";
+
+async function getModul(jurusan: string): Promise<ModulAjar[]> {
+  try {
+    const supabase = createPublicClient();
+    const { data } = await supabase
+      .from("modul_ajar")
+      .select("id, jurusan, sort_order, title, kelas, cover_url, file_url")
+      .eq("jurusan", jurusan)
+      .order("sort_order", { ascending: true });
+    return (data ?? []) as ModulAjar[];
+  } catch {
+    return [];
+  }
+}
 
 export type KeahlianProps = {
   slug: string;
@@ -21,10 +38,12 @@ export type KeahlianProps = {
   cmsPrefix?: string;
 };
 
-export function KeahlianDetail(p: KeahlianProps) {
+export async function KeahlianDetail(p: KeahlianProps) {
   const cms = p.cms ?? {};
   const pfx = p.cmsPrefix ?? p.slug;
   const k = (suffix: string) => `${pfx}.${suffix}`;
+  const moduls = await getModul(p.slug);
+  const cover = cms[k("cover")] ?? "";
   return (
     <>
       <PageHeader
@@ -46,12 +65,26 @@ export function KeahlianDetail(p: KeahlianProps) {
       <section className="bg-paper py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-5 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <div className="lg:col-span-5 reveal">
-            <div className={`${p.accentBg} ${p.accentInk} relative rounded-2xl p-10 aspect-[4/5] animate-float-slow shadow-2xl shadow-black/15 flex flex-col justify-between`}>
-              <span className="text-[10px] uppercase tracking-[0.22em] opacity-80">{p.title}</span>
-              <span className="font-display text-display-md italic">
-                {p.title.split(" ").map((w) => w[0]).join("")}
-              </span>
-              <p data-cms-key={k("tagline")} data-cms-type="textarea" data-cms-label="Tagline kartu" className="text-sm leading-relaxed border-t border-current/15 pt-4 opacity-85">
+            <div
+              data-cms-key={k("cover")}
+              data-cms-type="image"
+              data-cms-label="Gambar kartu jurusan"
+              className={`${cover ? "bg-navy text-paper" : `${p.accentBg} ${p.accentInk}`} relative overflow-hidden rounded-2xl p-10 aspect-[4/5] animate-float-slow shadow-2xl shadow-black/15 flex flex-col justify-between`}
+            >
+              {cover && (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={cover} alt={p.title} className="absolute inset-0 h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-black/25" />
+                </>
+              )}
+              <span className="relative z-10 text-[10px] uppercase tracking-[0.22em] opacity-80">{p.title}</span>
+              {!cover && (
+                <span className="font-display text-display-md italic">
+                  {p.title.split(" ").map((w) => w[0]).join("")}
+                </span>
+              )}
+              <p data-cms-key={k("tagline")} data-cms-type="textarea" data-cms-label="Tagline kartu" className="relative z-10 text-sm leading-relaxed border-t border-current/15 pt-4 opacity-85">
                 {cms[k("tagline")] ?? p.tagline}
               </p>
             </div>
@@ -100,7 +133,9 @@ export function KeahlianDetail(p: KeahlianProps) {
         </div>
       </section>
 
-      {/* Achievements */}
+      {/* Modul Ajar */}
+      <ModulAjarSection items={moduls} heading={cms[k("modul_heading")] ?? `Modul ajar ${p.title}.`} />
+
       <RelatedCards items={p.related} heading={cms[k("related_heading")] ?? "Konsentrasi lain di SMKN 74."} headingKey={k("related_heading")} />
     </>
   );

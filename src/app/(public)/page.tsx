@@ -8,7 +8,6 @@ import { PrestasiSection } from "@/components/home/PrestasiSection";
 import { GuruSection } from "@/components/home/GuruSection";
 import type { GuruCard } from "@/components/home/GuruSection";
 import { KontakSection } from "@/components/home/KontakSection";
-import { CTABanner } from "@/components/home/CTABanner";
 import { createPublicClient } from "@/lib/supabase/server";
 import { resolveSiteContent } from "@/lib/site-content/get";
 
@@ -62,7 +61,6 @@ export default async function Home() {
       <PrestasiSection cms={cms} />
       <GuruSection teachers={teachers} eyebrow={cms["guru.eyebrow"]} heading={cms["guru.heading"]} />
       <KontakSection cms={cms} />
-      <CTABanner cms={cms} />
     </>
   );
 }

@@ -7,7 +7,6 @@ export const metadata: Metadata = { title: "Struktur Organisasi — SMKN 74 Jaka
 
 const cards = [
   { tag: "Internal", title: "Manajemen Sekolah", body: "Kepala sekolah, wakil, dan koordinator bidang.", href: "/profil/struktur/manajemen", bg: "bg-navy", ink: "text-paper" },
-  { tag: "Pendukung", title: "Tenaga Kependidikan", body: "Tata usaha, pustakawan, laboran, dan teknisi.", href: "/profil/struktur/tenaga-kependidikan", bg: "bg-amber", ink: "text-navy" },
   { tag: "Eksternal", title: "Komite Sekolah", body: "Mitra orang tua dan masyarakat.", href: "/profil/struktur/komite", bg: "bg-moss", ink: "text-paper" },
   { tag: "Kesiswaan", title: "OSIS", body: "Organisasi Siswa Intra Sekolah.", href: "/profil/struktur/osis", bg: "bg-rust", ink: "text-paper" },
   { tag: "Kesiswaan", title: "MPK", body: "Majelis Perwakilan Kelas.", href: "/profil/struktur/mpk", bg: "bg-navy-deep", ink: "text-paper" },

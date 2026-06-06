@@ -45,6 +45,9 @@ export function EditOverlay({ enabled }: { enabled: boolean }) {
       if (fieldType === "image") {
         const img = el.matches("img") ? (el as HTMLImageElement) : el.querySelector("img");
         value = img?.getAttribute("src") ?? "";
+      } else if (fieldType === "link" || fieldType === "url") {
+        // Untuk link: nilai yang diedit adalah tujuan (href / data-cms-href), bukan teks tombol.
+        value = (el.getAttribute("data-cms-href") ?? el.getAttribute("href") ?? "").trim();
       } else {
         value = (el.textContent ?? "").trim();
       }

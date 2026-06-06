@@ -84,7 +84,7 @@ export function BudgetDetail(p: BudgetProps) {
           <p data-cms-key={`${kp}.cta.eyebrow`} data-cms-type="text" data-cms-label="Eyebrow CTA" className="text-xs uppercase tracking-[0.22em] text-amber mb-4">{cms[`${kp}.cta.eyebrow`] ?? "Butuh info lebih?"}</p>
           <h2 data-cms-key={`${kp}.cta.heading`} data-cms-type="text" data-cms-label="Judul CTA" className="font-display headline-quote mb-6">{cms[`${kp}.cta.heading`] ?? "Hubungi Tata Usaha atau Kotak Saran."}</h2>
           <div className="flex flex-wrap justify-center gap-3">
-            <Link href="/profil/struktur/tenaga-kependidikan" className="inline-flex items-center gap-2 h-11 px-6 rounded-full bg-amber text-navy text-sm font-semibold hover:scale-105 transition-transform">
+            <Link href="/kontak" className="inline-flex items-center gap-2 h-11 px-6 rounded-full bg-amber text-navy text-sm font-semibold hover:scale-105 transition-transform">
               <span data-cms-key={`${kp}.cta.btn1`} data-cms-type="text" data-cms-label="Tombol 1">{cms[`${kp}.cta.btn1`] ?? "Tata Usaha →"}</span>
             </Link>
             <Link href="/" className="inline-flex items-center gap-2 h-11 px-6 rounded-full border border-paper/30 text-sm font-medium hover:bg-white/5 transition-colors">
