@@ -37,8 +37,8 @@ export async function NewsSection({ cms }: { cms: SiteContent }) {
             >
               <div className="relative rounded-2xl aspect-[5/4] overflow-hidden mb-5 transition-transform duration-500 group-hover:-translate-y-1 bg-navy">
                 <Image
-                  src={n.image}
-                  alt={n.title}
+                  src={n.thumbnail ?? n.image}
+                  alt={n.thumbnailAlt ?? n.imageAlt ?? n.title}
                   fill
                   sizes="(min-width: 1024px) 420px, (min-width: 768px) 50vw, 100vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
