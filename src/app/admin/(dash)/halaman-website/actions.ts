@@ -27,8 +27,8 @@ export async function updateSiteContent(
       .upsert(rows, { onConflict: "key" });
     if (error) return { ok: false, error: error.message };
 
-    // Revalidate beranda & halaman publik terkait
-    revalidatePath("/");
+    // Revalidate SELURUH halaman publik (site_content dipakai global di layout/nav/footer).
+    revalidatePath("/", "layout");
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Terjadi kesalahan." };
@@ -43,7 +43,7 @@ export async function updateSiteContentKey(key: string, value: string): Promise<
       { onConflict: "key" }
     );
     if (error) return { ok: false, error: error.message };
-    revalidatePath("/");
+    revalidatePath("/", "layout");
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Gagal." };
