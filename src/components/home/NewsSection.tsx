@@ -48,9 +48,6 @@ export async function NewsSection({ cms }: { cms: SiteContent }) {
                   <span className="text-[13px] font-bold">{n.num}</span>
                   <span className="text-[8px] uppercase tracking-widest font-semibold mt-0.5">{n.month}</span>
                 </span>
-                <span className="absolute top-4 right-4 text-[10px] uppercase tracking-widest text-paper z-10 drop-shadow">
-                  {n.tag}
-                </span>
               </div>
               <h3 className="font-display text-xl leading-snug mb-2 group-hover:text-navy transition-colors">
                 {n.title}
