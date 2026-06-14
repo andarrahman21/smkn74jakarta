@@ -20,17 +20,12 @@ const cols = [
     { l: "Agenda", h: "/berita/agenda" },
     { l: "Prestasi", h: "/prestasi" },
   ]},
-  { title: "Lainnya", links: [
-    { l: "Mitra DUDI", h: "/mitra-dudi" },
-    { l: "Kontak", h: "/kontak" },
-  ]},
 ];
 
 const socials = [
-  { name: "Instagram", short: "IG", href: "https://instagram.com" },
-  { name: "YouTube",   short: "YT", href: "https://youtube.com" },
-  { name: "Facebook",  short: "FB", href: "https://facebook.com" },
-  { name: "TikTok",    short: "TT", href: "https://tiktok.com" },
+  { name: "Instagram", short: "IG", href: "https://www.instagram.com/smkn74jkt/" },
+  { name: "YouTube",   short: "YT", href: "https://www.youtube.com/@SMKNegeri74jakarta" },
+  { name: "TikTok",    short: "TT", href: "https://www.tiktok.com/@smkn74jkt_officia" },
 ];
 
 function IconInstagram() {
@@ -45,18 +40,13 @@ function IconYouTube() {
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.7 2.7 0 0 0-1.9-1.9C18 5 12 5 12 5s-6 0-7.7.3A2.7 2.7 0 0 0 2.4 7.2 28 28 0 0 0 2 12a28 28 0 0 0 .4 4.8 2.7 2.7 0 0 0 1.9 1.9C6 19 12 19 12 19s6 0 7.7-.3a2.7 2.7 0 0 0 1.9-1.9A28 28 0 0 0 22 12a28 28 0 0 0-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z" /></svg>
   );
 }
-function IconFacebook() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8H16l.5-3.5h-3v-2c0-1 .3-1.7 1.7-1.7h1.4V2.7a25 25 0 0 0-2.4-.1c-2.4 0-4 1.5-4 4.1V9.5H7.5V13h2.7v8h3.3z" /></svg>
-  );
-}
 function IconTikTok() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3v3.3a4.4 4.4 0 0 0 3.5 1.5v3a7.4 7.4 0 0 1-3.5-.9V15a5.5 5.5 0 1 1-5.5-5.5v3a2.5 2.5 0 1 0 2.5 2.5V3h3z" /></svg>
   );
 }
 const iconMap: Record<string, () => React.ReactNode> = {
-  Instagram: IconInstagram, YouTube: IconYouTube, Facebook: IconFacebook, TikTok: IconTikTok,
+  Instagram: IconInstagram, YouTube: IconYouTube, TikTok: IconTikTok,
 };
 
 export async function Footer() {
@@ -64,7 +54,7 @@ export async function Footer() {
   return (
     <footer className="bg-navy-deep text-paper">
       {/* Main */}
-      <div className="mx-auto max-w-7xl px-5 md:px-8 py-12 md:py-16 grid grid-cols-2 md:grid-cols-6 gap-8 md:gap-10">
+      <div className="mx-auto max-w-7xl px-5 md:px-8 py-12 md:py-16 grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-10">
         {/* Brand */}
         <div className="col-span-2 md:col-span-2">
           <div className="flex items-center gap-3 mb-5">
